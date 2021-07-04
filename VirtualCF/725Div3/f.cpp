@@ -33,6 +33,13 @@ void precompute(){
 int main() {
 	ll t; cin >> t;
 	while(t--){
-		
+		ll l, r; cin >> l >> r;
+		ll ans = 0;
+		while(l > 0 || r > 0){
+			ans += (r - l);
+			l /= 10;
+			r /= 10;
+		}
+		cout << ans << endl;
 	}
 }

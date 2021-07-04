@@ -31,5 +31,19 @@ void precompute(){
 }
 
 int main() {
-	
+	string n;
+	cin >> n; 
+	ll length = n.size();
+	ll ans = 0;
+	for(ll i =1; i < length; i++){
+		ans += (1 << i);
+	}
+	ll track = 0;
+	for(ll i = length -1; i >= 0; i--){
+		if(n[i] == '7'){
+			ans += (1 << track);
+		}
+		track++;
+	}
+	cout << ans+1 << endl;
 }

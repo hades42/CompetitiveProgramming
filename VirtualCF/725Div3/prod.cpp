@@ -17,6 +17,7 @@ void print2d(const T& t) {
 
 const ll maxSize = 100100;
 bool primes[maxSize];
+vector<ll> primes_list;
 void precompute(){
 	fill(primes, primes + maxSize, true);
 	primes[0] = false;
@@ -47,4 +48,32 @@ vector<ll> factors(ll n){
 }
 
 int main() {
+	precompute();
+	for(ll i = 2; i < maxSize; i++){
+		if(primes[i]){
+			primes_list.push_back(i);
+		}
+	}
+	ll t; cin >> t;
+	while(t--){
+		ll a, b, k; cin >> a >> b >> k;	
+		vector<ll> facsa = factors(a), facsb = factors(b);
+		if(k == 1){
+			if(a == b){
+				cout << "NO" << endl;
+			}
+			else if(a % b == 0 || b % a == 0){
+				cout << "YES" << endl;
+			} else{
+				cout << "NO" << endl;
+			} 
+			continue;
+		}
+		ll maxWays = facsb.size() + facsa.size();
+		if(k <= maxWays){
+			cout << "YES" << endl;	
+		} else{
+			cout << "NO" << endl;
+		}
+	}
 }

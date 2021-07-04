@@ -34,30 +34,17 @@ int main() {
 	ll t; cin >> t;
 	while(t--){
 		ll n, l, r; cin >> n >> l >> r;
-		vector<ll>arr(n);
+		vector<ll> arr(n);
 		for(ll i = 0; i < n; i++){
-			cin >> arr[i];	
+			cin >> arr[i];
 		}
 		sort(arr.begin(), arr.end());
-		ll count = 0;
-		for(ll i = 0; i  < n-1; i++){
-			ll f = arr[i];
-			ll low = i+1;
-			ll high = n-1;
-			while(low <= high){
-				ll mid = low + (high - low)/2;
-				if(f + arr[mid] < l){
-					low = mid + 1;
-				}
-				else if(f + arr[mid] > r){
-					high = mid -1;
-				}
-				else if( f + arr[mid] >= l && f + arr[mid] <= r){
-					cout << f << " " << arr[mid] << endl;
-					count++;
-				}
-			}
+		ll ans = 0;
+		for(ll i = 0; i < n - 1; i ++){
+			auto a = lower_bound(arr.begin() + i + 1, arr.end(), l - arr[i]);
+			auto b = upper_bound(arr.begin() + i + 1, arr.end(), r - arr[i]);
+			ans += (b-a);
 		}
-		cout << count << endl;
+		cout << ans << endl;
 	}
 }

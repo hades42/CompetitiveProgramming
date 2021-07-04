@@ -1,3 +1,4 @@
+// https://codeforces.com/problemset/problem/1202/A
 #include <bits/stdc++.h>
 #define ll long long
 const ll MOD = 1000000007;
@@ -33,6 +34,22 @@ void precompute(){
 int main() {
 	ll t; cin >> t;
 	while(t--){
-		
+		string x, y; cin >> x >> y;
+		reverse(x.begin(), x.end());
+		reverse(y.begin(), y.end());
+		ll posy=0, posx=0;
+		for(ll i = 0; i < y.size(); i++){
+			if(y[i] == '1'){
+				posy = i;
+				break;
+			}
+		}
+		for(ll i = posy; i < x.size(); i++){
+			if(x[i] == '1'){
+				posx = i;
+				break;
+			}
+		}
+		cout << posx - posy << endl;
 	}
 }
