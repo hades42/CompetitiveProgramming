@@ -1,3 +1,4 @@
+//https://codeforces.com/problemset/problem/1097/B
 #include <bits/stdc++.h>
 #define ll long long
 const ll MOD = 1000000007;
@@ -55,32 +56,26 @@ ll highestOneBit(ll i){
     i |= (i >> 16);
     return i - (i >> 1);
 }
-ll pow(ll a, ll b, ll mod){
-	ll ans = 1;
-	while(b){
-		if(b & 1) ans = (ans*a) % mod;
-		b /= 2;
-		a = (a*a) % mod;
-	}
-	return ans;
-}
 
 int main() {
+	ll n; cin >> n;
+	vector<ll> arr(n);			
+	for(ll i = 0; i < n; i++) cin >> arr[i];
+	for(ll mask = 0; mask < (1 << n); mask++){
+		ll angle = 0;
+		for(ll i = 0; i < n; i++){
+			if(mask & (1 << i)){
+				angle -= arr[i];
+			} else angle += arr[i];
+		}
+		if(angle % 360 == 0){
+			cout << "YES" << endl;
+			return 0;
+		}
+	}
+	cout << "NO" << endl;
+	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

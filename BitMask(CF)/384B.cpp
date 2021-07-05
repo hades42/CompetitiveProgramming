@@ -65,12 +65,25 @@ ll pow(ll a, ll b, ll mod){
 	return ans;
 }
 
-int main() {
+ll go(ll left, ll right, ll need, ll big){
+	ll mid = left + (right - left)/2; 
+	if(mid < need){
+		return go(mid + 1, right, need, big - 1);
+	} else if(mid > need){
+		return go(left, mid - 1, need, big - 1);
+	} else{
+		return big;
+	}
 }
-
-
-
-
+int main() {
+	ll n, k; cin >> n >> k;
+	ll size = 1;
+	for(ll i = 2; i <= n; i++){
+		size = (size*2) + 1;
+	}
+	ll ans = go(1, size, k, n);
+	cout << ans << endl;
+}
 
 
 

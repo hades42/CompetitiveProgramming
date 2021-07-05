@@ -1,3 +1,4 @@
+//https://codeforces.com/problemset/problem/1514/B
 #include <bits/stdc++.h>
 #define ll long long
 const ll MOD = 1000000007;
@@ -30,7 +31,15 @@ void precompute(){
 		}
 	}
 }
-
+ll pow(ll a, ll b, ll mod){
+	ll ans = 1;
+	while(b){
+		if(b & 1) ans = (ans*a) % mod;
+		b /= 2;
+		a = (a*a) % mod;
+	}
+	return ans;
+}
 vector<ll> factors(ll n){
 	vector<ll> ans;
 	for(ll i = 0; primes_list[i]*primes_list[i] <= n && i < primes_list.size(); i++){
@@ -55,31 +64,14 @@ ll highestOneBit(ll i){
     i |= (i >> 16);
     return i - (i >> 1);
 }
-ll pow(ll a, ll b, ll mod){
-	ll ans = 1;
-	while(b){
-		if(b & 1) ans = (ans*a) % mod;
-		b /= 2;
-		a = (a*a) % mod;
-	}
-	return ans;
-}
 
 int main() {
+	ll t; cin >> t;
+	while(t--){
+		ll n, k; cin >> n >> k;
+		cout << pow(n,k, MOD) << endl;
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

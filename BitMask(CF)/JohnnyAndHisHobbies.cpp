@@ -47,26 +47,45 @@ vector<ll> factors(ll n){
 	sort(ans.begin(), ans.end());
 	return ans;
 }
-ll highestOneBit(ll i){
-	i |= (i >>  1);
-    i |= (i >>  2);
-    i |= (i >>  4);
-    i |= (i >>  8);
-    i |= (i >> 16);
-    return i - (i >> 1);
-}
-ll pow(ll a, ll b, ll mod){
-	ll ans = 1;
-	while(b){
-		if(b & 1) ans = (ans*a) % mod;
-		b /= 2;
-		a = (a*a) % mod;
+
+bool check(ll k, vector<ll> arr, set<ll> s){
+	for(ll i = 0; i < arr.size(); i++){
+		if(!s.count(arr[i] ^k)){
+			return false;
+		}
 	}
-	return ans;
+	return true;
+}
+int main() {
+	ll t; cin >> t; 
+	while(t--){
+		ll n; cin >> n;
+		vector<ll> arr(n);
+		set<ll> s;
+		for(ll i = 0; i < n; i++){
+			cin >> arr[i];
+			s.insert(arr[i]);
+		}
+		bool find = false;
+		for(ll k = 1; k <= 1024; k++){
+			if(check(k, arr, s)){
+				find = true;
+				cout << k << endl;
+				break;
+			}
+		}
+		if(!find){
+			cout << -1 << endl;
+		}
+	}
 }
 
-int main() {
-}
+
+
+
+
+
+
 
 
 
