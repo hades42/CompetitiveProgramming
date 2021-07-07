@@ -47,47 +47,46 @@ vector<ll> factors(ll n){
 	sort(ans.begin(), ans.end());
 	return ans;
 }
-
-bool check(ll k, vector<ll> arr, set<ll> s){
-	for(ll i = 0; i < arr.size(); i++){
-		if(!s.count(arr[i] ^k)){
-			return false;
-		}
+ll highestOneBit(ll i){
+	i |= (i >>  1);
+    i |= (i >>  2);
+    i |= (i >>  4);
+    i |= (i >>  8);
+    i |= (i >> 16);
+    return i - (i >> 1);
+}
+ll pow(ll a, ll b, ll mod){
+	ll ans = 1;
+	while(b){
+		if(b & 1) ans = (ans*a) % mod;
+		b /= 2;
+		a = (a*a) % mod;
 	}
-	return true;
+	return ans;
 }
 
-vector<ll> cnt(3000005);
 int main() {
-	ll t; cin >> t; 
-	while(t--){
-		ll n, w; cin >> n >> w;
-		for(ll i = 0; i < n; i++){
-			ll n; cin >> n;
-			cnt[n]++;
+	ll n; cin >> n;
+	vector<ll> play(n+1);
+	vector<ll> win(n+1);
+	for(ll i = 0; i < (n*(n-1)/2)-1; i++){
+		ll x, y;
+		cin >> x >> y;
+		play[x]++; play[y]++;
+		win[x]++;
+	}
+	vector<ll> missing;
+	for(ll i = 1; i <= n; i++){
+		if(play[i] == n -2){
+			missing.push_back(i);
 		}
-		ll ans = 0;
-		while(n>0){
-			ll curr = w;
-			for(ll i = (1 << 20); i >= 1; i >>= 1){
-				while(cnt[i] > 0 && curr >= i){
-					cnt[i]--;
-					n--;
-					curr -= i;
-				}
-			}
-			ans++;
-		}
-		cout << ans << endl;
+	}
+	if(win[missing[0]] > win[missing[1]]){
+		cout << missing[0] << " " << missing[1] << endl;
+	} else{
+		cout << missing[1] << " " << missing[0] << endl;
 	}
 }
-
-
-
-
-
-
-
 
 
 

@@ -47,47 +47,52 @@ vector<ll> factors(ll n){
 	sort(ans.begin(), ans.end());
 	return ans;
 }
-
-bool check(ll k, vector<ll> arr, set<ll> s){
-	for(ll i = 0; i < arr.size(); i++){
-		if(!s.count(arr[i] ^k)){
-			return false;
-		}
-	}
-	return true;
+ll highestOneBit(ll i){
+	i |= (i >>  1);
+    i |= (i >>  2);
+    i |= (i >>  4);
+    i |= (i >>  8);
+    i |= (i >> 16);
+    return i - (i >> 1);
 }
-
-vector<ll> cnt(3000005);
+ll pow(ll a, ll b, ll mod){
+	ll ans = 1;
+	while(b){
+		if(b & 1) ans = (ans*a) % mod;
+		b /= 2;
+		a = (a*a) % mod;
+	}
+	return ans;
+}
+ll MSB(ll num){
+	for(ll i = 20; i >= 0; i--){
+		if((num >> i) & 1) return i; 
+	}
+	return -1;
+}
 int main() {
-	ll t; cin >> t; 
-	while(t--){
-		ll n, w; cin >> n >> w;
-		for(ll i = 0; i < n; i++){
-			ll n; cin >> n;
-			cnt[n]++;
-		}
-		ll ans = 0;
-		while(n>0){
-			ll curr = w;
-			for(ll i = (1 << 20); i >= 1; i >>= 1){
-				while(cnt[i] > 0 && curr >= i){
-					cnt[i]--;
-					n--;
-					curr -= i;
-				}
-			}
-			ans++;
-		}
-		cout << ans << endl;
+	set<ll> s;
+	for(ll i = 0; i <= 20; i++){
+		s.insert((1 << i) - 1);
 	}
+	ll x; cin >> x;
+	ll i = 0;
+	vector<ll> step;
+	while(!s.count(x)){
+		i = i + 1;
+		if(i % 2 == 0){
+			x += 1;
+			continue;
+		}
+		ll r = MSB(x);
+		if((1 << r) != x) r++;
+		x = (x ^ ((1 << r) - 1));
+		step.push_back(r);
+	}
+	cout << i << endl;
+	for(ll num : step) cout << num << " ";
+	return 0;
 }
-
-
-
-
-
-
-
 
 
 

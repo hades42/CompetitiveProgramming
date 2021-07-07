@@ -1,3 +1,4 @@
+// https://codeforces.com/problemset/problem/1498/B
 #include <bits/stdc++.h>
 #define ll long long
 const ll MOD = 1000000007;
@@ -47,47 +48,50 @@ vector<ll> factors(ll n){
 	sort(ans.begin(), ans.end());
 	return ans;
 }
-
-bool check(ll k, vector<ll> arr, set<ll> s){
-	for(ll i = 0; i < arr.size(); i++){
-		if(!s.count(arr[i] ^k)){
-			return false;
-		}
+ll highestOneBit(ll i){
+	i |= (i >>  1);
+    i |= (i >>  2);
+    i |= (i >>  4);
+    i |= (i >>  8);
+    i |= (i >> 16);
+    return i - (i >> 1);
+}
+ll pow(ll a, ll b, ll mod){
+	ll ans = 1;
+	while(b){
+		if(b & 1) ans = (ans*a) % mod;
+		b /= 2;
+		a = (a*a) % mod;
 	}
-	return true;
+	return ans;
 }
 
-vector<ll> cnt(3000005);
 int main() {
-	ll t; cin >> t; 
+	ll t; cin >> t;	
 	while(t--){
-		ll n, w; cin >> n >> w;
+		multiset<ll> ms;
+		ll n, w;
+		cin >> n >> w;
 		for(ll i = 0; i < n; i++){
-			ll n; cin >> n;
-			cnt[n]++;
+			ll num; cin >> num;
+			ms.insert(num);
 		}
-		ll ans = 0;
-		while(n>0){
-			ll curr = w;
-			for(ll i = (1 << 20); i >= 1; i >>= 1){
-				while(cnt[i] > 0 && curr >= i){
-					cnt[i]--;
-					n--;
-					curr -= i;
-				}
+		ll heigh = 1;
+		ll currwidth = w;
+		while(!ms.empty()){
+			auto it = ms.upper_bound(currwidth);
+			if(it != ms.begin()){
+				it--;
+				currwidth -= *it;
+				ms.erase(it);
+			} else{
+				currwidth = w;
+				heigh++;
 			}
-			ans++;
 		}
-		cout << ans << endl;
+		cout << heigh << endl;
 	}
 }
-
-
-
-
-
-
-
 
 
 
