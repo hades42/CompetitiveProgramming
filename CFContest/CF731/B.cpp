@@ -65,7 +65,32 @@ ll pow(ll a, ll b, ll mod){
 	return ans;
 }
 
+set<string> s;
+void solve(){
+	string in; cin >> in;
+	vector<ll> arr(26);
+	for(ll i = 0 ; i < in.size(); i++){
+		arr[in[i] - 97] = 1;
+	}
+	ll check = true;
+	for(ll i = 0; i < in.size(); i++){
+		if(arr[i] != 1){
+			check = false;
+		}
+	}
+	for(ll i = 1; i < in.size() - 1; i++){
+		if(in[i] > in[i-1] && in[i] > in[i+1]){
+			check = false;
+		}
+	}
+	if(check) cout << "YES" << endl;
+	else cout << "NO" << endl;
+}
 int main() {
+	ll t; cin >> t;
+	while(t--){
+		solve();
+	}
 }
 
 

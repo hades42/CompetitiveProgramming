@@ -1,3 +1,4 @@
+// https://open.kattis.com/problems/busnumbers
 #include <bits/stdc++.h>
 #define ll long long
 const ll MOD = 1000000007;
@@ -66,6 +67,15 @@ ll pow(ll a, ll b, ll mod){
 }
 
 int main() {
+	ll n; cin >> n;
+	vector<ll> bus;
+	for(ll i = 0; i < n; i++){
+		cin >> bus[i];
+	}
+	sort(bus.begin(), bus.end());
+	for(ll i = 0 ; i < n; i++){
+		
+	}
 }
 
 

@@ -1,3 +1,4 @@
+// https://open.kattis.com/problems/engineeringenglish
 #include <bits/stdc++.h>
 #define ll long long
 const ll MOD = 1000000007;
@@ -65,7 +66,28 @@ ll pow(ll a, ll b, ll mod){
 	return ans;
 }
 
+string low(string inp)
+{
+    string res;
+    for (ll i = 0; i < inp.length(); i++)
+    {
+        res += tolower(inp[i]);
+    }
+    return res;
+}
+
 int main() {
+	map<string, int> m;
+	string s;
+	while(cin >> s){
+		m[low(s)]++;
+		if(m[low(s)] == 1){
+			cout << s << " ";
+		} else{
+			cout << ". ";
+		}
+	}
+	return 0;
 }
 
 

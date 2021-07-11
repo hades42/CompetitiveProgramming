@@ -66,6 +66,22 @@ ll pow(ll a, ll b, ll mod){
 }
 
 int main() {
+	ll n,c; cin >> n >> c;
+	vector<ll> arr(n);
+	for(ll i = 0; i < n; i++) cin >> arr[i];
+	ll ans = 0;
+	for(ll i = 0; i < n; i++){
+		ll canEat = 0;
+		ll currAmount = 0;
+		for(ll j = i; j < n; j++){
+			if(canEat + arr[j] <= c){
+				canEat += arr[j];
+				currAmount++;
+			}
+		}	
+		ans = max(currAmount, ans);
+	}
+	cout << ans << endl;
 }
 
 

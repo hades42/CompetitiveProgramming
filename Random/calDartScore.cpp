@@ -1,3 +1,4 @@
+// https://open.kattis.com/problems/calculatingdartscores
 #include <bits/stdc++.h>
 #define ll long long
 const ll MOD = 1000000007;
@@ -64,8 +65,29 @@ ll pow(ll a, ll b, ll mod){
 	}
 	return ans;
 }
-
+string s = "";
+ll dart(ll n){
+	if(n == 0){
+		return 0;
+	} else if(n <= 20){
+		s += ("single" + n + "\n");
+		n = 0;
+	} else if(n <= 40){
+		s += ("double" + n  + "\n");
+		n -= (n /2)*2;
+	} else if(n <= 60){
+		s += ("triple" + (n / 3) + "\n");
+	} else if(n > 60){
+		if()
+	}
+}
 int main() {
+	ll n; cin >> n;	
+	if(0 == dart(dart(dart(n)))){
+		cout << s << endl;
+	} else{
+		cout << "impossible" << endl;
+	}
 }
 
 
