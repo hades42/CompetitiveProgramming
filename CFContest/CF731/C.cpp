@@ -64,8 +64,80 @@ ll pow(ll a, ll b, ll mod){
 	}
 	return ans;
 }
-
+void solve(){
+	ll k, n, m; cin >> k >> n >> m;
+	vector<ll> a(n);
+	vector<ll> b(m);
+	vector<ll> ans;
+	for(ll i = 0; i < n; i++){
+		cin >> a[i];
+	}
+	for(ll i = 0; i < m; i++){
+		cin >> b[i];
+	}
+	ll i, j; i = j = 0;
+	while(i < n && j < m){
+		if(a[i] == 0 && b[j] == 0){
+			ans.push_back(a[i]);
+			i++;
+			k++;
+			continue;
+		}
+		if(a[i] > k && b[j] > k){
+			cout << -1 << endl;
+			return;
+		}
+		if(a[i] < b[j]){
+			ans.push_back(a[i]);
+			if(a[i] == 0) k++;
+			i++;
+		} else{
+			ans.push_back(b[j]);
+			if(b[j] == 0) k++;
+			j++;
+		}
+	}	
+	if(i < n){
+		while(i < n){
+			if(a[i] == 0){
+				ans.push_back(a[i]);
+				k++;
+				i++;
+				continue;
+			}
+			if(a[i] > k){
+				cout << -1 << endl;
+				return;
+			} else{
+				ans.push_back(a[i]);
+				i++;
+			}
+		}
+	}
+	if(j < m){
+		while(j < m){
+			if(b[j] == 0){
+				ans.push_back(b[j]);
+				k++;
+				j++;
+				continue;
+			}
+			if(b[j] > k){
+				cout << -1 << endl;
+				return;
+			} else{
+				ans.push_back(b[j]);
+				j++;
+			}
+		}
+	}
+	print(ans);
+}
 int main() {
+	ll t; cin >> t;
+	while(t--){
+		solve();
+	}
 }
 
 

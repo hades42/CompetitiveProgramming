@@ -1,3 +1,4 @@
+//https://codeforces.com/contest/1547/problem/E
 #include <bits/stdc++.h>
 #define ll long long
 const ll MOD = 1000000007;
@@ -65,28 +66,35 @@ ll pow(ll a, ll b, ll mod){
 	return ans;
 }
 void solve(){
-	string in; cin >> in;
-	vector<ll> arr(26);
-	for(ll i = 0; i < in.size(); i++){
-		arr[in[i] - 97]++;
+	ll n, k; cin >> n >> k;
+	vector<ll> pos(k);
+	vector<ll> tem(n+1);
+	for(ll i = 1; i <= n; i++) tem[i] = INF;
+	for(ll i = 0; i < k; i++){
+		cin >> pos[i];
 	}
-	for(ll i = 0; i < in.size(); i++){
-		if(arr[i] != 1){
-			cout << "NO" << endl;
-			return;
-		}
+	for(ll i = 0; i < k; i++){
+		cin >> tem[pos[i]];
 	}
-	for(ll i = 1; i < in.size() - 1; i++){
-		if(in[i] > in[i-1] && in[i] > in[i+1]){
-			cout << "NO" << endl;
-			return;
-		}
-	}	
-	cout << "YES" << endl;
+	vector<ll> ans(n+1, INF);
+	ll r = INF;	
+	for(ll i = 1; i <= n; i++){
+		r = min(r, tem[i]);
+		ans[i] = min(ans[i], r);
+		r++;
+	}
+	r = INF;
+	for(ll i = n; i >= 1; i--){
+		r = min(r,tem[i]);
+		ans[i] = min(ans[i], r);
+		r++;
+	}
+	for(ll i = 1; i <= n; i++) cout << ans[i] << " ";
+	cout << endl;
 }
 int main() {
-	ll t; cin >> t;
-	while(t--){
+	ll q; cin >> q;
+	while(q--){
 		solve();
 	}
 }

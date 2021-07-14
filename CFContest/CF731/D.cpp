@@ -65,27 +65,17 @@ ll pow(ll a, ll b, ll mod){
 	return ans;
 }
 void solve(){
-	string in; cin >> in;
-	vector<ll> arr(26);
-	for(ll i = 0; i < in.size(); i++){
-		arr[in[i] - 97]++;
+	ll n; cin >> n;
+	vector<ll> arr(n);
+	for(ll i = 0; i < n; i++) cin >> arr[i];
+	vector<ll> y(n);
+	for(ll i = 1; i < n; i++){
+		y[i] = ((arr[i-1] ^ y[i-1]) & arr[i]) ^ (arr[i-1] ^ y[i-1]);
 	}
-	for(ll i = 0; i < in.size(); i++){
-		if(arr[i] != 1){
-			cout << "NO" << endl;
-			return;
-		}
-	}
-	for(ll i = 1; i < in.size() - 1; i++){
-		if(in[i] > in[i-1] && in[i] > in[i+1]){
-			cout << "NO" << endl;
-			return;
-		}
-	}	
-	cout << "YES" << endl;
+	print(y);
 }
 int main() {
-	ll t; cin >> t;
+	ll t; cin >> t;	
 	while(t--){
 		solve();
 	}

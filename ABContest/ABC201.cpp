@@ -64,31 +64,21 @@ ll pow(ll a, ll b, ll mod){
 	}
 	return ans;
 }
-void solve(){
-	string in; cin >> in;
-	vector<ll> arr(26);
-	for(ll i = 0; i < in.size(); i++){
-		arr[in[i] - 97]++;
-	}
-	for(ll i = 0; i < in.size(); i++){
-		if(arr[i] != 1){
-			cout << "NO" << endl;
-			return;
-		}
-	}
-	for(ll i = 1; i < in.size() - 1; i++){
-		if(in[i] > in[i-1] && in[i] > in[i+1]){
-			cout << "NO" << endl;
-			return;
-		}
-	}	
-	cout << "YES" << endl;
-}
+
 int main() {
-	ll t; cin >> t;
-	while(t--){
-		solve();
+	ll n; cin >> n;
+	map<ll , string> mapy;
+	set<ll> sety;
+	ll maxi = 0;
+	for(ll i = 0; i < n; i++){
+		string s; ll t; cin >> s >> t; 
+		maxi = max(maxi, t);
+		mapy[t] = s;
+		sety.insert(t);
 	}
+	auto it = sety.lower_bound(maxi);
+	it--;
+	cout << mapy[*it] << endl;
 }
 
 

@@ -64,32 +64,21 @@ ll pow(ll a, ll b, ll mod){
 	}
 	return ans;
 }
-void solve(){
-	string in; cin >> in;
-	vector<ll> arr(26);
-	for(ll i = 0; i < in.size(); i++){
-		arr[in[i] - 97]++;
-	}
-	for(ll i = 0; i < in.size(); i++){
-		if(arr[i] != 1){
-			cout << "NO" << endl;
-			return;
-		}
-	}
-	for(ll i = 1; i < in.size() - 1; i++){
-		if(in[i] > in[i-1] && in[i] > in[i+1]){
-			cout << "NO" << endl;
-			return;
-		}
-	}	
-	cout << "YES" << endl;
-}
+
 int main() {
-	ll t; cin >> t;
-	while(t--){
-		solve();
+	ll n, k;	
+	cin >> n >> k;
+	while(k--){
+		if(n % 200 == 0){
+			n /= 200;
+		} else{
+			n *= 1000;
+			n += 200;
+		}
 	}
+	cout << n << endl;
 }
+
 
 
 

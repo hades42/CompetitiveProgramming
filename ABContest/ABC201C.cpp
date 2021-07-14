@@ -1,3 +1,4 @@
+// https://atcoder.jp/contests/abc201/editorial/1835
 #include <bits/stdc++.h>
 #define ll long long
 const ll MOD = 1000000007;
@@ -64,31 +65,25 @@ ll pow(ll a, ll b, ll mod){
 	}
 	return ans;
 }
-void solve(){
-	string in; cin >> in;
-	vector<ll> arr(26);
-	for(ll i = 0; i < in.size(); i++){
-		arr[in[i] - 97]++;
-	}
-	for(ll i = 0; i < in.size(); i++){
-		if(arr[i] != 1){
-			cout << "NO" << endl;
-			return;
-		}
-	}
-	for(ll i = 1; i < in.size() - 1; i++){
-		if(in[i] > in[i-1] && in[i] > in[i+1]){
-			cout << "NO" << endl;
-			return;
-		}
-	}	
-	cout << "YES" << endl;
-}
+
 int main() {
-	ll t; cin >> t;
-	while(t--){
-		solve();
+	string s; cin >> s;
+	ll ans = 0;
+	for(ll i = 0; i <= 9999; i++){
+		unordered_set<ll> digits;
+		ll password = i;	
+		for(ll i = 0; i < 4; i++){
+			digits.insert(password % 10);
+			password /= 10;
+		}
+		bool check = true;
+		for(ll i = 0; i < 10; i++){
+			if(s[i] == 'x' && digits.count(i)) check = false;
+			if(s[i] == 'o' && !digits.count(i)) check = false;
+		}
+		ans += check;
 	}
+	cout << ans << endl;
 }
 
 
