@@ -64,45 +64,39 @@ ll pow(ll a, ll b, ll mod) {
 	}
 	return ans;
 }
-
+typedef pair<ll, ll> pi;
+typedef tuple<ll, ll, ll> tp;
 int main() {
 	ll n, m; cin >> n >> m;
-	vector<tuple<ll, ll, ll>> edges(m);
-	vector<ll> distance(n);
-	for (ll i = 0; i < n; i++) {
-		distance[i] = INF;
-	}
-	distance[0] = 0;
+	vector<vector<pi>> g(n);
+	vector<vector<ll>> processed(n, vector<ll>(2, INF));
+	priority_queue<tp, vector<tp>, greater<tp>> q;
 	for (ll i = 0; i < m; i++) {
 		ll a, b, c; cin >> a >> b >> c;
 		a--; b--;
-		edges.push_back({a, b, -1 * c});
+		g[a].push_back({b, c});
 	}
-	for (ll i = 0; i < n - 1; i++) {
-		for (auto e : edges) {
-			ll a, b , c;
-			tie(a, b, c) = e;
-			if(distance[a] == INF) continue; 
-			distance[b] = min(distance[b], distance[a] + c);
-		}
-	}
-	for (ll i = 0; i < n - 1; i++) {
-		for (auto e : edges) {
-			ll a, b , c;
-			tie(a, b, c) = e;
-			if(distance[a] == INF) continue; 
-			if (distance[b] > distance[a] + c) {
-				distance[b] = -INF;
+	q.push({0, 0, true});
+	cout << endl;
+	while (!q.empty()) {
+		ll d, curr, avail;
+		tie(d, curr, avail) = q.top(); q.pop();
+		cout << d << " " << curr << " " << avail << endl;
+		if (d < processed[curr][avail]) {
+			processed[curr][avail] = d;
+
+			for (auto p : g[curr]) {
+				ll b = p.first;
+				ll w = p.second;
+				q.push({d + w, b, avail});
+				if (avail) {
+					q.push({d + w / 2, b, false});
+				}
 			}
 		}
 	}
-	if (distance[n - 1] == -INF) {
-		cout << -1 << endl;
-		return 0;
-	}
-	cout << -1 * distance[n - 1] << endl;
+	print2d(processed);
 }
-
 
 
 
