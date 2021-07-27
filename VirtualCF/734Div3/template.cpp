@@ -66,21 +66,6 @@ ll pow(ll a, ll b, ll mod){
 }
 
 int main() {
-	string s; cin >> s;
-	ll n = s.size();
-	string t = "chokudai";
-	vector<vector<ll>> dp(9, vector<ll>(n+1));
-	for(ll i = 0; i < n + 1; i++) dp[0][i] = 1;
-	for(ll i = 0; i < t.size(); i++){
-		for(ll j = 0; j < n; j++){
-			if(t[i] == s[j]){
-				dp[i+1][j+1] = dp[i+1][j] + dp[i][j];
-			} else{
-				dp[i+1][j+1] = dp[i+1][j];	
-			}
-		}
-	}
-	cout << dp[8][n] << endl;
 }
 
 

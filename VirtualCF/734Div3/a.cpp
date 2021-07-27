@@ -64,37 +64,25 @@ ll pow(ll a, ll b, ll mod) {
 	}
 	return ans;
 }
-typedef pair<ll, ll> pi;
-typedef tuple<ll, ll, ll> tp;
-int main() {
-	ll n, m; cin >> n >> m;
-	vector<vector<pi>> g(n);
-	vector<vector<ll>> processed(n, vector<ll>(2, INF));
-	priority_queue<tp, vector<tp>, greater<tp>> q;
-	for (ll i = 0; i < m; i++) {
-		ll a, b, c; cin >> a >> b >> c;
-		a--; b--;
-		g[a].push_back({b, c});
-	}
-	q.push({0, 0, true});
-	cout << endl;
-	while (!q.empty()) {
-		ll d, curr, avail;
-		tie(d, curr, avail) = q.top(); q.pop();
-		cout << d << " " << curr << " " << avail << endl;
-		if (d < processed[curr][avail]) {
-			processed[curr][avail] = d;
-			for (auto p : g[curr]) {
-				ll b = p.first;
-				ll w = p.second;
-				q.push({d + w, b, avail});
-				if (avail) {
-					q.push({d + w / 2, b, false});
-				}
-			}
+
+void solve() {
+	ll n; cin >> n;
+	ll a = n / 3;
+	if (n % 3 == 0) {
+		cout << a << " " << a << endl;
+	} else {
+		if (a + (a + 1) * 2 == n) {
+			cout << a << " " << (a + 1) << endl;
+		} else {
+			cout << a + 1 << " " << a << endl;
 		}
 	}
-	print2d(processed);
+}
+int main() {
+	ll t; cin >> t;
+	while (t--) {
+		solve();
+	}
 }
 
 

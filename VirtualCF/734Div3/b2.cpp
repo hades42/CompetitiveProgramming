@@ -64,37 +64,41 @@ ll pow(ll a, ll b, ll mod) {
 	}
 	return ans;
 }
-typedef pair<ll, ll> pi;
-typedef tuple<ll, ll, ll> tp;
-int main() {
-	ll n, m; cin >> n >> m;
-	vector<vector<pi>> g(n);
-	vector<vector<ll>> processed(n, vector<ll>(2, INF));
-	priority_queue<tp, vector<tp>, greater<tp>> q;
-	for (ll i = 0; i < m; i++) {
-		ll a, b, c; cin >> a >> b >> c;
-		a--; b--;
-		g[a].push_back({b, c});
+void solve() {
+	ll n, k; cin >> n >> k;
+	vector<ll> m(n+1); 
+	vector<ll> arr(n);
+	vector<vector<ll>> occ(n + 1);
+	vector<ll> ans(n);
+	for (ll i = 0; i < n; i++) {
+		cin >> arr[i];
+		m[arr[i]]++;
+		occ[arr[i]].push_back(i);
 	}
-	q.push({0, 0, true});
-	cout << endl;
-	while (!q.empty()) {
-		ll d, curr, avail;
-		tie(d, curr, avail) = q.top(); q.pop();
-		cout << d << " " << curr << " " << avail << endl;
-		if (d < processed[curr][avail]) {
-			processed[curr][avail] = d;
-			for (auto p : g[curr]) {
-				ll b = p.first;
-				ll w = p.second;
-				q.push({d + w, b, avail});
-				if (avail) {
-					q.push({d + w / 2, b, false});
+	vector<ll> remain;
+	for (ll i = 1; i <= n; i++) {
+		if (m[i] >= k) {
+			for (ll j = 0; j < k; j++) {
+				ans[occ[i][j]] = j + 1;
+			}
+		} else {
+				for (ll j = 0; j < m[i]; j++) {
+					remain.push_back(occ[i][j]);
 				}
 			}
 		}
+	for(ll i = 0; i <= remain.size() - k; i+= k){
+		for(ll j = 0; j < k; j++){
+			ans[remain[i+j]] = j+1;
+		}
 	}
-	print2d(processed);
+	print(ans);
+}
+int main() {
+	ll t; cin >> t;
+	while (t--) {
+		solve();
+	}
 }
 
 

@@ -6,66 +6,93 @@ using namespace std;
 
 template<typename T>
 void print(const T& t) {
-    std::copy(t.cbegin(), t.cend(), std::ostream_iterator<typename T::value_type>(std::cout, " "));
-    cout << endl;
+	std::copy(t.cbegin(), t.cend(), std::ostream_iterator<typename T::value_type>(std::cout, " "));
+	cout << endl;
 }
 
 template<typename T>
 void print2d(const T& t) {
-    std::for_each(t.cbegin(), t.cend(), print<typename T::value_type>);
+	std::for_each(t.cbegin(), t.cend(), print<typename T::value_type>);
 }
 
 const ll maxSize = 100100;
 bool primes[maxSize];
 vector<ll> primes_list;
-void precompute(){
+void precompute() {
 	fill(primes, primes + maxSize, true);
 	primes[0] = false;
 	primes[1] = false;
-	for(ll i = 2; i*i < maxSize; i++){
-		if(primes[i]){
-			for(ll j = i + i; j < maxSize; j+= i){
+	for (ll i = 2; i * i < maxSize; i++) {
+		if (primes[i]) {
+			for (ll j = i + i; j < maxSize; j += i) {
 				primes[j] = false;
 			}
 		}
 	}
 }
 
-vector<ll> factors(ll n){
+vector<ll> factors(ll n) {
 	vector<ll> ans;
-	for(ll i = 0; primes_list[i]*primes_list[i] <= n && i < primes_list.size(); i++){
-		if(n % primes_list[i] == 0){
-			while(n % primes_list[i] == 0){
-				n = n/primes_list[i];
+	for (ll i = 0; primes_list[i]*primes_list[i] <= n && i < primes_list.size(); i++) {
+		if (n % primes_list[i] == 0) {
+			while (n % primes_list[i] == 0) {
+				n = n / primes_list[i];
 				ans.push_back(primes_list[i]);
 			}
 		}
 	}
-	if(n > 1){
+	if (n > 1) {
 		ans.push_back(n);
 	}
 	sort(ans.begin(), ans.end());
 	return ans;
 }
-ll highestOneBit(ll i){
+ll highestOneBit(ll i) {
 	i |= (i >>  1);
-    i |= (i >>  2);
-    i |= (i >>  4);
-    i |= (i >>  8);
-    i |= (i >> 16);
-    return i - (i >> 1);
+	i |= (i >>  2);
+	i |= (i >>  4);
+	i |= (i >>  8);
+	i |= (i >> 16);
+	return i - (i >> 1);
 }
-ll pow(ll a, ll b, ll mod){
+ll pow(ll a, ll b, ll mod) {
 	ll ans = 1;
-	while(b){
-		if(b & 1) ans = (ans*a) % mod;
+	while (b) {
+		if (b & 1) ans = (ans * a) % mod;
 		b /= 2;
-		a = (a*a) % mod;
+		a = (a * a) % mod;
 	}
 	return ans;
 }
-
+int getLucky(string s, int k) {
+	vector<int> convert;
+	for(char c : s){
+		int temp = c - 97 + 1;
+		convert.push_back(temp);
+	}
+	int first = 0;
+	for(int &num : convert){
+		while(num > 0){
+			first += num%10;
+			num /= 10;
+		}
+	}
+	if(k == 1) return first;	
+	vector<int> ans;
+	ans.push_back(first);
+	for(int j = 2; j <= k; j++){
+		int num = ans[ans.size() - 1];
+		int temp = 0;
+		while(num > 0){
+			temp += num % 10;
+			num /= 10;
+		}
+		ans.push_back(temp); 
+	}
+	return ans[ans.size() - 1];
+}
 int main() {
+	cout << getLucky("leetcode",1) << endl;
 }
 
 

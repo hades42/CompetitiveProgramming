@@ -64,23 +64,26 @@ ll pow(ll a, ll b, ll mod){
 	}
 	return ans;
 }
-
-int main() {
+void solve(){
 	string s; cin >> s;
-	ll n = s.size();
-	string t = "chokudai";
-	vector<vector<ll>> dp(9, vector<ll>(n+1));
-	for(ll i = 0; i < n + 1; i++) dp[0][i] = 1;
-	for(ll i = 0; i < t.size(); i++){
-		for(ll j = 0; j < n; j++){
-			if(t[i] == s[j]){
-				dp[i+1][j+1] = dp[i+1][j] + dp[i][j];
-			} else{
-				dp[i+1][j+1] = dp[i+1][j];	
-			}
-		}
+	vector<ll> arr(26);
+	for(int i = 0; i < s.size(); i++){
+		arr[s[i] - 97]++;
 	}
-	cout << dp[8][n] << endl;
+	ll ans = 0;
+	ll alone = 0;
+	for(ll i = 0; i < 26; i++){
+		if(arr[i] == 1) alone++;
+		if(arr[i] > 1) ans++;
+	}
+	ans += alone/2;
+	cout << ans << endl;
+}
+int main() {
+	ll t; cin >> t;
+	while(t--){
+		solve();
+	}
 }
 
 

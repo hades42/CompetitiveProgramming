@@ -65,22 +65,41 @@ ll pow(ll a, ll b, ll mod){
 	return ans;
 }
 
-int main() {
-	string s; cin >> s;
-	ll n = s.size();
-	string t = "chokudai";
-	vector<vector<ll>> dp(9, vector<ll>(n+1));
-	for(ll i = 0; i < n + 1; i++) dp[0][i] = 1;
-	for(ll i = 0; i < t.size(); i++){
-		for(ll j = 0; j < n; j++){
-			if(t[i] == s[j]){
-				dp[i+1][j+1] = dp[i+1][j] + dp[i][j];
-			} else{
-				dp[i+1][j+1] = dp[i+1][j];	
-			}
+void solve(){
+	ll n; cin >> n;
+	vector<vector<ll>> freq(26);
+	for(ll i = 0; i < n; i++){
+		string s; cin >> s;
+		vector<ll> temp(26);
+		for(int i = 0; i < 26; i++) temp[i] = - s.size();
+		for(char c : s){
+			temp[c - 97] += 2;
+		}
+		for(int i = 0; i < 26; i++){
+			freq[i].push_back(temp[i]);
 		}
 	}
-	cout << dp[8][n] << endl;
+	ll bestCount = 0;
+	for(ll i = 0; i < 26; i++){
+		sort(freq[i].begin() ,freq[i].end(), greater<ll>());
+		if(freq[i][0] <= 0) continue;
+		ll sum = freq[i][0];
+		ll j = 1;
+		for(; j < n && sum > 0; j++){
+			sum += freq[i][j];
+		}
+		if(sum <= 0) j--;
+		if(j > bestCount){
+			bestCount = j;
+		}
+	}
+	cout << bestCount << endl;
+}
+int main() {
+	ll t; cin >> t;
+	while(t--){
+		solve();
+	}
 }
 
 
