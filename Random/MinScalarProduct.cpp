@@ -1,3 +1,4 @@
+//https://open.kattis.com/problems/minimumscalar
 #include <bits/stdc++.h>
 #define ll long long
 const ll MOD = 1000000007;
@@ -64,37 +65,33 @@ ll pow(ll a, ll b, ll mod) {
 	}
 	return ans;
 }
-typedef pair<ll, ll> pi;
-typedef tuple<ll, ll, ll> tp;
+
+void solve() {
+	ll n; cin >> n;
+	vector<ll> v1(n);
+	vector<ll> v2(n);
+	for (ll i = 0; i < n; i++) {
+		cin >> v1[i];
+	}
+
+	for (ll i = 0; i < n; i++) {
+		cin >> v2[i];
+	}
+	sort(v1.begin(), v1.end());
+	sort(v2.begin(), v2.end());
+	ll ans = 0;
+	for (ll i = 0; i < n; i++) {
+		ans += v1[i] * v2[n - i - 1];
+	}
+	cout << ans << endl;
+}
+
 int main() {
-	ll n, m; cin >> n >> m;
-	vector<vector<pi>> graph(n);
-	for (ll i = 0; i < m; i++) {
-		ll a, b , c; cin >> a >> b >> c;
-		a--; b--;
-		graph[a].push_back({b, c});
+	ll t; cin >> t;
+	for (ll i = 1; i <= t; i++) {
+		cout << "Case #" << i << ": ";
+		solve();
 	}
-	vector<vector<ll>> dp(n, vector<ll>(2, INF));
-	priority_queue<tp, vector<tp>, greater<tp>> p;
-	p.push({0, 0, true});
-	while (!p.empty()) {
-		tp a = p.top();
-		p.pop();
-		ll dis, curr, avail;
-		tie(dis, curr, avail) = a;
-		if(dis < dp[curr][avail]){
-			dp[curr][avail] = dis;
-			for(auto u : graph[curr]){
-				ll b = u.first;
-				ll w = u.second;
-				p.push({dis + w, b, avail});
-				if(avail){
-					p.push({dis + w/2, b, false});
-				}
-			}
-		}
-	}
-	cout << dp[n-1][false] << endl;
 }
 
 

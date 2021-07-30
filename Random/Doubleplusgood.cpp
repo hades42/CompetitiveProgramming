@@ -64,37 +64,38 @@ ll pow(ll a, ll b, ll mod) {
 	}
 	return ans;
 }
-typedef pair<ll, ll> pi;
-typedef tuple<ll, ll, ll> tp;
+
 int main() {
-	ll n, m; cin >> n >> m;
-	vector<vector<pi>> graph(n);
-	for (ll i = 0; i < m; i++) {
-		ll a, b , c; cin >> a >> b >> c;
-		a--; b--;
-		graph[a].push_back({b, c});
-	}
-	vector<vector<ll>> dp(n, vector<ll>(2, INF));
-	priority_queue<tp, vector<tp>, greater<tp>> p;
-	p.push({0, 0, true});
-	while (!p.empty()) {
-		tp a = p.top();
-		p.pop();
-		ll dis, curr, avail;
-		tie(dis, curr, avail) = a;
-		if(dis < dp[curr][avail]){
-			dp[curr][avail] = dis;
-			for(auto u : graph[curr]){
-				ll b = u.first;
-				ll w = u.second;
-				p.push({dis + w, b, avail});
-				if(avail){
-					p.push({dis + w/2, b, false});
-				}
-			}
+	vector<ll> v;
+	string s; cin >> s;
+	for (char c : s) {
+		if (c >= 48 && c <= 57) {
+			v.push_back(c - 48);
 		}
 	}
-	cout << dp[n-1][false] << endl;
+    set<ll> nums;
+
+    for(ll i = 0; i < (1 << (v.size()-1)); i++) {
+        ll total = 0;
+        ll curr = 0;
+
+        curr = v[0];
+        for(ll j = 1; j < v.size(); j++) {
+            if(i & (1<<(j-1))) {
+                total += curr;
+                curr = v[j];
+            }
+            else {
+                string t = to_string(curr) + to_string(v[j]);
+                ll i = stoll(t);
+                curr = i;
+            }
+        }
+        total += curr;
+        nums.insert(total);
+    }
+
+    cout << nums.size() << endl;
 }
 
 

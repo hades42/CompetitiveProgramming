@@ -64,37 +64,66 @@ ll pow(ll a, ll b, ll mod) {
 	}
 	return ans;
 }
-typedef pair<ll, ll> pi;
-typedef tuple<ll, ll, ll> tp;
-int main() {
-	ll n, m; cin >> n >> m;
-	vector<vector<pi>> graph(n);
-	for (ll i = 0; i < m; i++) {
-		ll a, b , c; cin >> a >> b >> c;
-		a--; b--;
-		graph[a].push_back({b, c});
-	}
-	vector<vector<ll>> dp(n, vector<ll>(2, INF));
-	priority_queue<tp, vector<tp>, greater<tp>> p;
-	p.push({0, 0, true});
-	while (!p.empty()) {
-		tp a = p.top();
-		p.pop();
-		ll dis, curr, avail;
-		tie(dis, curr, avail) = a;
-		if(dis < dp[curr][avail]){
-			dp[curr][avail] = dis;
-			for(auto u : graph[curr]){
-				ll b = u.first;
-				ll w = u.second;
-				p.push({dis + w, b, avail});
-				if(avail){
-					p.push({dis + w/2, b, false});
-				}
+
+ll n, m;
+vector<bool> visited;
+vector<bool> finish;
+vector<ll> ans;
+vector<vector<ll>> graph;
+vector<ll> parent;
+
+void dfs(ll u) {
+	if (ans.size() > 0) return;
+	for (auto v : graph[u]) {
+		if (ans.size() == 0 && visited[v] && !finish[v]) {
+			ll u2 = u;
+			while(u != v){
+				ans.push_back(u);
+				u = parent[u];
 			}
+			ans.push_back(v);
+			ans.push_back(u2);
+			return;
+		} else if(!visited[v]){
+			parent[v] = u;
+			visited[v] = true;
+			dfs(v);
+			finish[v] = true;
 		}
 	}
-	cout << dp[n-1][false] << endl;
+}
+
+int main() {
+	cin >> n >> m;
+	visited.resize(n);
+	graph.resize(n);
+	parent.resize(n);
+	finish.resize(n);
+	for (ll i = 0; i < n; i++) {
+		parent[i] = -1;
+		visited[i] = false;
+		finish[i] = false;
+	}
+	for (ll i = 0; i < m; i++) {
+		ll a , b; cin >> a >> b;
+		a--;
+		b--;
+		graph[a].push_back(b);
+	}
+	for (ll i = 0; i < n; i++) {
+		if (!visited[i]) {
+			visited[i] = true;
+			dfs(i);
+			finish[i] = true;
+		}
+	}
+	if(ans.size() == 0){ 
+		cout << "IMPOSSIBLE" << endl;
+	} else{
+		cout << ans.size() << endl;
+		reverse(ans.begin(), ans.end());
+		for(ll num : ans) cout << num + 1 << " ";
+	}
 }
 
 
