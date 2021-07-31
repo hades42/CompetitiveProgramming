@@ -64,38 +64,46 @@ ll pow(ll a, ll b, ll mod) {
 	}
 	return ans;
 }
+string getString (char x){
+	string s(1, x);
+	return s;
+};
 
 int main() {
-	vector<ll> v;
-	string s; cin >> s;
-	for (char c : s) {
-		if (c >= 48 && c <= 57) {
-			v.push_back(c - 48);
-		}
+	string input; cin >> input;
+	vector<string> nums;
+	stringstream ss(input);
+	string num;
+	while(getline(ss, num, '+')){
+		nums.push_back(num);
 	}
-    set<ll> nums;
-
-    for(ll i = 0; i < (1 << (v.size()-1)); i++) {
-        ll total = 0;
-        ll curr = 0;
-
-        curr = v[0];
-        for(ll j = 1; j < v.size(); j++) {
-            if(i & (1<<(j-1))) {
-                total += curr;
-                curr = v[j];
-            }
-            else {
-                string t = to_string(curr) + to_string(v[j]);
-                ll i = stoll(t);
-                curr = i;
-            }
-        }
-        total += curr;
-        nums.insert(total);
-    }
-
-    cout << nums.size() << endl;
+	set<ll> unique;
+	for(ll mask = 0; mask < (1 << nums.size()); mask++){
+		ll sum = 0;
+		string temp = "";
+		vector<string> arr;
+		for(ll i = 0; i < nums.size(); i++){
+			if(mask & (1 << i)){
+				temp+= nums[i];
+			} else{
+				if(temp == ""){
+					arr.push_back(nums[i]);
+				} else{
+					arr.push_back(temp);
+					temp = nums[i];
+				}
+			}
+		}
+		if(temp != ""){
+			arr.push_back(temp);
+		}
+		for(string s : arr){
+			sum += stoll(s);
+		}
+		// cout << sum << endl;
+		unique.insert(sum);
+	}
+	cout << unique.size() << endl;
 }
 
 

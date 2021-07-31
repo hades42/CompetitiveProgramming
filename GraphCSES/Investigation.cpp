@@ -64,72 +64,54 @@ ll pow(ll a, ll b, ll mod) {
 	}
 	return ans;
 }
-
-vector<vector<ll>> edge;
-vector<vector<ll>> pre_edge;
-vector<ll> degree;
-vector<ll> parent;
+typedef pair<ll, ll> pi;
+vector<vector<pair<ll, ll>>> edge;
 vector<ll> dist;
-ll n, m;
-
-void topsort(){
-	queue<ll> q;
-	for(ll i = 0; i < n; i++){
-		if(degree[i] == 0){
-			q.push(i);
-		}
+vector<ll> num;
+vector<ll> minf;
+vector<ll> maxf;
+vector<bool> visited;
+int main() {
+	ll n, m; cin >> n >> m;
+	edge = vector<vector<pair<ll, ll>>>(n);
+	dist = vector<ll>(n, INF);
+	minf = vector<ll>(n);
+	maxf = vector<ll>(n);
+	num = vector<ll>(n);
+	visited = vector<bool>(n);
+	for (ll i = 0; i < m; i++) {
+		ll a, b, c; cin >> a >> b >> c; a--; b--;
+		edge[a].push_back({b, c});
 	}
-	while(!q.empty()){
-		ll u = q.front();
-		q.pop();
-
-		for(ll v : edge[u]){
-			degree[v]--;
-			if(degree[v] == 0) q.push(v);
-		}
-
-		ll mx = -INF;
-		ll mx_node = -1;
-		for(ll prev : pre_edge[u]){
-			if(dist[prev] + 1 > mx){
-				mx = dist[prev] + 1;
-				mx_node = prev;
+	num[0] = 1;
+	dist[0] = 0;
+	priority_queue<pi, vector<pi>, greater<pi>> pq;
+	pq.push({0,0});
+	while(!pq.empty()){
+		ll a = pq.top().second;
+		pq.pop();
+		if(!visited[a]){
+			visited[a] = true;
+			for(auto v : edge[a]){
+				ll b = v.first, w = v.second;
+				ll temp = dist[a] + w;
+				if(dist[b] > temp){
+					dist[b] = temp;
+					num[b] = num[a];
+					minf[b] = minf[a] + 1;
+					maxf[b] = maxf[a] + 1;
+					pq.push({dist[b], b});
+				} else if(dist[b] == temp){
+					num[b] = (num[b] + num[a]) % MOD;
+					minf[b] = min(minf[b], minf[a] + 1);
+					maxf[b] = max(maxf[b], maxf[a] + 1);
+				}
 			}
 		}
-		parent[u] = mx_node;
-		dist[u] = mx;
-		if(u == 0) dist[u] = 1;
 	}
+	cout << dist[n-1] << " " << num[n-1] << " " << minf[n-1] << " " << maxf[n-1] << endl;
 }
 
-int main() {
-	cin >> n >> m;
-	edge = vector<vector<ll>>(n);
-	pre_edge = vector<vector<ll>>(n);
-	degree = vector<ll>(n);
-	parent= vector<ll>(n,-1);
-	dist = vector<ll>(n, -INF);
-	for(ll i = 0; i < m; i++){
-		ll a, b; cin >> a >> b; a--; b--;
-		edge[a].push_back(b);
-		pre_edge[b].push_back(a);
-		degree[b]++;
-	}
-	topsort();
-	if(dist[n-1] > 0){
-		vector<ll> ans;
-		ll end = n-1;
-		while(end != 0){
-			ans.push_back(end);
-			end = parent[end];
-		}
-		ans.push_back(0);
-		cout << ans.size() << endl;
-		for(ll i = 0; i < ans.size(); i++) cout << ans[ans.size() - i - 1]+1 << " ";
-	} else {
-		cout << "IMPOSSIBLE" << endl;
-	}
-}
 
 
 
