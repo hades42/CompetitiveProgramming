@@ -47,6 +47,7 @@ vector<ll> factors(ll n){
 	sort(ans.begin(), ans.end());
 	return ans;
 }
+
 ll highestOneBit(ll i){
 	i |= (i >>  1);
     i |= (i >>  2);
@@ -55,6 +56,7 @@ ll highestOneBit(ll i){
     i |= (i >> 16);
     return i - (i >> 1);
 }
+
 ll pow(ll a, ll b, ll mod){
 	ll ans = 1;
 	while(b){
@@ -70,6 +72,7 @@ int main() {
 	vector<ll> ans;
 	ll Q; cin >> Q;
 	ll q2 = 0;
+
 	for(ll i = 0; i < Q; i++){
 		ll a; cin >> a;
 		if(a == 1){
@@ -88,6 +91,7 @@ int main() {
 			}
 		}
 	}
+
 	for(auto num : ans){
 		cout << num << endl;
 	}

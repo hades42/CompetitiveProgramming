@@ -1,120 +1,72 @@
-// https://open.kattis.com/problems/calculatingdartscores
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <array>
+#include <iostream>
+#include <map>
+#include <math.h>
+#include <queue>
+#include <stack>
+#include <vector>
 #define ll long long
+using namespace std;
+typedef tuple<ll, ll, ll> tp;
+typedef pair<ll, ll> pr;
+
 const ll MOD = 1000000007;
 const ll INF = 1e18;
-using namespace std;
 
-template<typename T>
-void print(const T& t) {
-    std::copy(t.cbegin(), t.cend(), std::ostream_iterator<typename T::value_type>(std::cout, " "));
-    cout << endl;
-}
-
-template<typename T>
-void print2d(const T& t) {
-    std::for_each(t.cbegin(), t.cend(), print<typename T::value_type>);
+template <typename T> void print(const T &t) {
+  std::copy(t.cbegin(), t.cend(),
+            std::ostream_iterator<typename T::value_type>(std::cout, " "));
+  cout << endl;
 }
 
-const ll maxSize = 100100;
-bool primes[maxSize];
-vector<ll> primes_list;
-void precompute(){
-	fill(primes, primes + maxSize, true);
-	primes[0] = false;
-	primes[1] = false;
-	for(ll i = 2; i*i < maxSize; i++){
-		if(primes[i]){
-			for(ll j = i + i; j < maxSize; j+= i){
-				primes[j] = false;
-			}
-		}
-	}
+template <typename T> void print2d(const T &t) {
+  std::for_each(t.cbegin(), t.cend(), print<typename T::value_type>);
+  cout << endl;
 }
 
-vector<ll> factors(ll n){
-	vector<ll> ans;
-	for(ll i = 0; primes_list[i]*primes_list[i] <= n && i < primes_list.size(); i++){
-		if(n % primes_list[i] == 0){
-			while(n % primes_list[i] == 0){
-				n = n/primes_list[i];
-				ans.push_back(primes_list[i]);
-			}
-		}
-	}
-	if(n > 1){
-		ans.push_back(n);
-	}
-	sort(ans.begin(), ans.end());
-	return ans;
-}
-ll highestOneBit(ll i){
-	i |= (i >>  1);
-    i |= (i >>  2);
-    i |= (i >>  4);
-    i |= (i >>  8);
-    i |= (i >> 16);
-    return i - (i >> 1);
-}
-ll pow(ll a, ll b, ll mod){
-	ll ans = 1;
-	while(b){
-		if(b & 1) ans = (ans*a) % mod;
-		b /= 2;
-		a = (a*a) % mod;
-	}
-	return ans;
-}
-string s = "";
-ll dart(ll n){
-	if(n == 0){
-		return 0;
-	} else if(n <= 20){
-		s += ("single" + n + "\n");
-		n = 0;
-	} else if(n <= 40){
-		s += ("double" + n  + "\n");
-		n -= (n /2)*2;
-	} else if(n <= 60){
-		s += ("triple" + (n / 3) + "\n");
-	} else if(n > 60){
-		if()
-	}
-}
 int main() {
-	ll n; cin >> n;	
-	if(0 == dart(dart(dart(n)))){
-		cout << s << endl;
-	} else{
-		cout << "impossible" << endl;
-	}
+  cin.tie(0)->sync_with_stdio(0);
+  cin.exceptions(cin.failbit);
+  ll n;
+  cin >> n;
+  ll target;
+  cin >> target;
+  vector<ll> input(n);
+  for (ll i = 0; i < n; i++) {
+    cin >> input[i];
+  }
+  vector<vector<bool>> dp(n + 1, vector<bool>(target + 1));
+  for (int i = 0; i <= n; i++) {
+    dp[i][0] = true;
+  }
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= target; j++) {
+      if (input[i - 1] > j) {
+        dp[i][j] = dp[i - 1][j];
+      } else {
+        dp[i][j] = dp[i - 1][j] || dp[i - 1][j - input[i - 1]];
+      }
+    }
+  }
+  if (dp[n][target]) {
+    cout << "Found a subset with sum " << target << endl;
+  } else {
+    cout << "Cant find any subset" << endl;
+    return 0;
+  }
+  ll backtrack = target;
+  vector<ll> result;
+  while (backtrack != 0) {
+    for (ll i = 0; i < n; i++) {
+      if (backtrack - input[i] > 0) {
+        if (dp[n][backtrack - input[i]]) {
+          result.push_back(input[i]);
+          backtrack -= input[i];
+          break;
+        }
+      }
+    }
+  }
+  print(result);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
