@@ -1,0 +1,61 @@
+#include <algorithm>
+#include <array>
+#include <iostream>
+#include <iterator>
+#include <map>
+#include <math.h>
+#include <queue>
+#include <set>
+#include <stack>
+#include <vector>
+#define ll long long
+using namespace std;
+typedef tuple<ll, ll, ll> tp;
+typedef pair<ll, ll> pr;
+
+const ll MOD = 1000000007;
+const ll INF = 1e18;
+
+template <typename T> void print(const T &t) {
+  std::copy(t.cbegin(), t.cend(),
+            std::ostream_iterator<typename T::value_type>(std::cout, " "));
+  cout << endl;
+}
+
+template <typename T> void print2d(const T &t) {
+  std::for_each(t.cbegin(), t.cend(), print<typename T::value_type>);
+}
+
+vector<ll> arr(2000005);
+void precompute(ll num) {
+  if (arr[num])
+    return;
+  arr[num] = true;
+  if (num > 1000000)
+    return;
+  ll l1 = num + 2020;
+  ll l2 = num + 2021;
+  precompute(l1);
+  precompute(l2);
+}
+
+void solve() {
+  ll num;
+  cin >> num;
+  if (arr[num]) {
+    cout << "YES" << endl;
+  } else {
+    cout << "NO" << endl;
+  }
+}
+
+int main() {
+  cin.tie(0)->sync_with_stdio(0);
+  cin.exceptions(cin.failbit);
+  precompute(0);
+  ll t;
+  cin >> t;
+  while (t--) {
+    solve();
+  }
+}
