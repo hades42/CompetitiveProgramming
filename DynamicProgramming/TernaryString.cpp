@@ -27,40 +27,24 @@ template <typename T> void print2d(const T &t) {
 }
 
 void solve() {
-  ll n;
-  cin >> n;
-  string a, b;
-  cin >> a >> b;
-  ll ans = 0;
-  for (ll i = 0; i < n; i++) {
-    ll top = a[i];
-    ll bottom = b[i];
-    if (top != bottom) {
-      ans += 2;
-      continue;
+  string s;
+  cin >> s;
+  vector<pair<ll, ll>> arr;
+  ll ans = INF;
+  for (ll i = 0; i < s.size(); i++) {
+    if (arr.empty() || arr.back().first != s[i]) {
+      arr.push_back(make_pair(s[i], 1));
     } else {
-      if (top == '0') {
-        ans += 1;
-        ll next = i + 1;
-        if (next < n) {
-          if (a[next] == b[next] && a[next] == '1') {
-            ans += 1;
-            i++;
-          }
-        }
-      }
-
-      if (top == '1') {
-        ll next = i + 1;
-        if (next < n) {
-          if (a[next] == b[next] && a[next] == '0') {
-            ans += 2;
-            i++;
-          }
-        }
-      }
+      arr.back().second++;
     }
   }
+  for (ll i = 1; i < arr.size() - 1; i++) {
+    if (arr[i - 1].first != arr[i + 1].first) {
+      ans = min(ans, arr[i].second + 2);
+    }
+  }
+  if (ans == INF)
+    ans = 0;
   cout << ans << endl;
 }
 

@@ -29,39 +29,30 @@ template <typename T> void print2d(const T &t) {
 void solve() {
   ll n;
   cin >> n;
-  string a, b;
-  cin >> a >> b;
-  ll ans = 0;
+  vector<ll> arr(n);
   for (ll i = 0; i < n; i++) {
-    ll top = a[i];
-    ll bottom = b[i];
-    if (top != bottom) {
-      ans += 2;
-      continue;
-    } else {
-      if (top == '0') {
-        ans += 1;
-        ll next = i + 1;
-        if (next < n) {
-          if (a[next] == b[next] && a[next] == '1') {
-            ans += 1;
-            i++;
-          }
-        }
+    cin >> arr[i];
+  }
+  sort(arr.rbegin(), arr.rend());
+  ll ans = 0;
+  for (ll i = 0; i < arr.size(); i++) {
+    if (i % 2 == 0) {
+      if (arr[i] % 2 == 0) {
+        ans += arr[i];
       }
-
-      if (top == '1') {
-        ll next = i + 1;
-        if (next < n) {
-          if (a[next] == b[next] && a[next] == '0') {
-            ans += 2;
-            i++;
-          }
-        }
+    } else {
+      if (arr[i] % 2 != 0) {
+        ans -= arr[i];
       }
     }
   }
-  cout << ans << endl;
+  if (ans > 0) {
+    cout << "Alice" << endl;
+  } else if (ans < 0) {
+    cout << "Bob" << endl;
+  } else {
+    cout << "Tie" << endl;
+  }
 }
 
 int main() {

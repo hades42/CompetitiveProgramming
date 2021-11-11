@@ -29,39 +29,32 @@ template <typename T> void print2d(const T &t) {
 void solve() {
   ll n;
   cin >> n;
-  string a, b;
-  cin >> a >> b;
-  ll ans = 0;
+  ll sum = 0;
+  map<ll, ll> m;
+  vector<ll> arr(n);
   for (ll i = 0; i < n; i++) {
-    ll top = a[i];
-    ll bottom = b[i];
-    if (top != bottom) {
-      ans += 2;
-      continue;
-    } else {
-      if (top == '0') {
-        ans += 1;
-        ll next = i + 1;
-        if (next < n) {
-          if (a[next] == b[next] && a[next] == '1') {
-            ans += 1;
-            i++;
-          }
-        }
-      }
-
-      if (top == '1') {
-        ll next = i + 1;
-        if (next < n) {
-          if (a[next] == b[next] && a[next] == '0') {
-            ans += 2;
-            i++;
-          }
-        }
-      }
-    }
+    ll num;
+    cin >> num;
+    m[num]++;
+    arr[i] = num;
+    sum += num;
   }
-  cout << ans << endl;
+  ll check = (2 * sum) % n;
+  if (check != 0) {
+    cout << 0 << endl;
+    return;
+  }
+  ll need = (2 * sum) / n;
+  ll res = 0;
+  for (ll i = 0; i < n; i++) {
+    ll curr = arr[i];
+    ll find = need - curr;
+    if (m[find])
+      res += m[find];
+    if (find == curr)
+      res -= 1;
+  }
+  cout << res / 2 << endl;
 }
 
 int main() {

@@ -26,44 +26,33 @@ template <typename T> void print2d(const T &t) {
   std::for_each(t.cbegin(), t.cend(), print<typename T::value_type>);
 }
 
+ll check(ll x) {
+  if (x > 0)
+    return 1;
+  else
+    return -1;
+}
+
 void solve() {
   ll n;
   cin >> n;
-  string a, b;
-  cin >> a >> b;
-  ll ans = 0;
+  vector<ll> arr(n);
   for (ll i = 0; i < n; i++) {
-    ll top = a[i];
-    ll bottom = b[i];
-    if (top != bottom) {
-      ans += 2;
-      continue;
-    } else {
-      if (top == '0') {
-        ans += 1;
-        ll next = i + 1;
-        if (next < n) {
-          if (a[next] == b[next] && a[next] == '1') {
-            ans += 1;
-            i++;
-          }
-        }
-      }
-
-      if (top == '1') {
-        ll next = i + 1;
-        if (next < n) {
-          if (a[next] == b[next] && a[next] == '0') {
-            ans += 2;
-            i++;
-          }
-        }
-      }
-    }
+    cin >> arr[i];
   }
-  cout << ans << endl;
+  ll sum = 0;
+  for (ll i = 0; i < n; i++) {
+    ll curr = arr[i];
+    ll j = i;
+    while (j < n && check(arr[i]) == check(arr[j])) {
+      curr = max(curr, arr[j]);
+      j++;
+    }
+    sum += curr;
+    i = j - 1;
+  }
+  cout << sum << endl;
 }
-
 int main() {
   cin.tie(0)->sync_with_stdio(0);
   cin.exceptions(cin.failbit);

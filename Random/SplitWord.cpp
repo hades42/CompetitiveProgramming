@@ -235,6 +235,7 @@ ll minCut4(vector<ll> cutList, ll n) {
   cout << endl;
   ll curr = dp[0][n - 1];
   vector<ll> res;
+  set<ll> check;
   queue<pair<ll, ll>> q;
   q.push(make_pair(0, n - 1));
   while (!q.empty()) {
@@ -245,9 +246,12 @@ ll minCut4(vector<ll> cutList, ll n) {
         if (dp[curr.first][cut] + dp[cut + 1][curr.second] +
                 (curr.second - curr.first + 1) ==
             dp[curr.first][curr.second]) {
-          res.push_back(cut);
-          q.push(make_pair(curr.first, cut));
-          q.push(make_pair(cut + 1, curr.second));
+          if (!check.count(cut)) {
+            res.push_back(cut);
+            check.insert(cut);
+            q.push(make_pair(curr.first, cut));
+            q.push(make_pair(cut + 1, curr.second));
+          }
         }
       }
     }

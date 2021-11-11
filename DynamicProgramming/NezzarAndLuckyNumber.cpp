@@ -26,42 +26,45 @@ template <typename T> void print2d(const T &t) {
   std::for_each(t.cbegin(), t.cend(), print<typename T::value_type>);
 }
 
-void solve() {
-  ll n;
-  cin >> n;
-  string a, b;
-  cin >> a >> b;
-  ll ans = 0;
-  for (ll i = 0; i < n; i++) {
-    ll top = a[i];
-    ll bottom = b[i];
-    if (top != bottom) {
-      ans += 2;
-      continue;
-    } else {
-      if (top == '0') {
-        ans += 1;
-        ll next = i + 1;
-        if (next < n) {
-          if (a[next] == b[next] && a[next] == '1') {
-            ans += 1;
-            i++;
-          }
-        }
-      }
+bool check(ll num, ll d) {
+  ll find = false;
+  while (num > 0) {
+    ll curr = num % 10;
+    if (curr == d) {
+      find = true;
+      break;
+    }
+    num /= 10;
+  }
+  if (find)
+    return true;
+  else
+    return false;
+}
 
-      if (top == '1') {
-        ll next = i + 1;
-        if (next < n) {
-          if (a[next] == b[next] && a[next] == '0') {
-            ans += 2;
-            i++;
-          }
+void solve() {
+  ll q, d;
+  cin >> q >> d;
+  for (ll i = 0; i < q; i++) {
+    ll num;
+    cin >> num;
+    if (check(num, d)) {
+      cout << "YES" << endl;
+    } else {
+      bool find = false;
+      while (num > 0) {
+        num -= d;
+        if (check(num, d)) {
+          find = true;
+          break;
         }
       }
+      if (find)
+        cout << "YES" << endl;
+      else
+        cout << "NO" << endl;
     }
   }
-  cout << ans << endl;
 }
 
 int main() {

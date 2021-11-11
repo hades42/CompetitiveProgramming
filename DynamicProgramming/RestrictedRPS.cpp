@@ -29,39 +29,56 @@ template <typename T> void print2d(const T &t) {
 void solve() {
   ll n;
   cin >> n;
-  string a, b;
-  cin >> a >> b;
-  ll ans = 0;
-  for (ll i = 0; i < n; i++) {
-    ll top = a[i];
-    ll bottom = b[i];
-    if (top != bottom) {
-      ans += 2;
-      continue;
-    } else {
-      if (top == '0') {
-        ans += 1;
-        ll next = i + 1;
-        if (next < n) {
-          if (a[next] == b[next] && a[next] == '1') {
-            ans += 1;
-            i++;
-          }
-        }
-      }
+  ll a, b, c;
+  cin >> a >> b >> c;
+  string s;
+  cin >> s;
+  string res = "";
+  vector<ll> arr(26);
 
-      if (top == '1') {
-        ll next = i + 1;
-        if (next < n) {
-          if (a[next] == b[next] && a[next] == '0') {
-            ans += 2;
-            i++;
-          }
-        }
-      }
+  for (ll i = 0; i < n; i++) {
+    arr[s[i] - 'A']++;
+  }
+
+  ll win =
+      min(a, arr['S' - 'A']) + min(b, arr['R' - 'A']) + min(c, arr['P' - 'A']);
+  if (2 * win < n) {
+    cout << "NO" << endl;
+    return;
+  }
+  for (ll i = 0; i < n; i++) {
+    if (s[i] == 'R' && b) {
+      res += 'P';
+      b--;
+    } else if (s[i] == 'P' && c) {
+      res += 'S';
+      c--;
+    } else if (s[i] == 'S' && a) {
+      res += 'R';
+      a--;
+    } else {
+      res += '_';
     }
   }
-  cout << ans << endl;
+
+  for (ll i = 0; i < n; i++) {
+    if (res[i] != '_') {
+      continue;
+    }
+
+    if (a) {
+      res[i] = 'R';
+      a--;
+    } else if (b) {
+      res[i] = 'P';
+      b--;
+    } else {
+      res[i] = 'S';
+      c--;
+    }
+  }
+  cout << "YES" << endl;
+  cout << res << endl;
 }
 
 int main() {

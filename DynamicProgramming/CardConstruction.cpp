@@ -27,41 +27,29 @@ template <typename T> void print2d(const T &t) {
 }
 
 void solve() {
-  ll n;
-  cin >> n;
-  string a, b;
-  cin >> a >> b;
-  ll ans = 0;
-  for (ll i = 0; i < n; i++) {
-    ll top = a[i];
-    ll bottom = b[i];
-    if (top != bottom) {
-      ans += 2;
-      continue;
-    } else {
-      if (top == '0') {
-        ans += 1;
-        ll next = i + 1;
-        if (next < n) {
-          if (a[next] == b[next] && a[next] == '1') {
-            ans += 1;
-            i++;
-          }
-        }
-      }
-
-      if (top == '1') {
-        ll next = i + 1;
-        if (next < n) {
-          if (a[next] == b[next] && a[next] == '0') {
-            ans += 2;
-            i++;
-          }
-        }
-      }
+  ll num;
+  cin >> num;
+  vector<ll> dp;
+  dp.push_back(0);
+  dp.push_back(2);
+  ll start = 1;
+  for (ll i = 2;; i++) {
+    dp.push_back(i * 2 + i - 1 + dp[i - 1]);
+    if (dp[i] > num) {
+      start = i;
+      break;
     }
   }
-  cout << ans << endl;
+  // print(dp);
+  // cout << start << endl;
+  ll count = 0;
+  for (ll i = start; i >= 1; i--) {
+    while (num >= dp[i]) {
+      count++;
+      num -= dp[i];
+    }
+  }
+  cout << count << endl;
 }
 
 int main() {

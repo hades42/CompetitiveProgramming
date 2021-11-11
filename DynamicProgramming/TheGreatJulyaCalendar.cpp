@@ -26,50 +26,26 @@ template <typename T> void print2d(const T &t) {
   std::for_each(t.cbegin(), t.cend(), print<typename T::value_type>);
 }
 
-void solve() {
-  ll n;
-  cin >> n;
-  string a, b;
-  cin >> a >> b;
-  ll ans = 0;
-  for (ll i = 0; i < n; i++) {
-    ll top = a[i];
-    ll bottom = b[i];
-    if (top != bottom) {
-      ans += 2;
-      continue;
-    } else {
-      if (top == '0') {
-        ans += 1;
-        ll next = i + 1;
-        if (next < n) {
-          if (a[next] == b[next] && a[next] == '1') {
-            ans += 1;
-            i++;
-          }
-        }
-      }
-
-      if (top == '1') {
-        ll next = i + 1;
-        if (next < n) {
-          if (a[next] == b[next] && a[next] == '0') {
-            ans += 2;
-            i++;
-          }
-        }
-      }
-    }
+ll getL(ll num) {
+  ll res = 0;
+  while (num > 0) {
+    ll curr = num % 10;
+    res = max(res, curr);
+    num /= 10;
   }
-  cout << ans << endl;
+  return res;
 }
 
 int main() {
   cin.tie(0)->sync_with_stdio(0);
   cin.exceptions(cin.failbit);
-  ll t;
-  cin >> t;
-  while (t--) {
-    solve();
+  ll n;
+  cin >> n;
+  ll count = 0;
+  while (n > 0) {
+    ll getNum = getL(n);
+    n -= getNum;
+    count++;
   }
+  cout << count << endl;
 }
