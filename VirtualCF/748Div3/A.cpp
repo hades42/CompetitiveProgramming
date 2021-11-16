@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <array>
-#include <cstdio>
 #include <iostream>
 #include <iterator>
 #include <map>
@@ -27,12 +26,30 @@ template <typename T> void print2d(const T &t) {
   std::for_each(t.cbegin(), t.cend(), print<typename T::value_type>);
 }
 
-void setIO(string s) { // the argument is the filename without the extension
-  freopen((s + ".in").c_str(), "r", stdin);
-  freopen((s + ".out").c_str(), "w", stdout);
+void solve() {
+  vector<ll> arr(3);
+  for (ll i = 0; i < 3; i++) {
+    cin >> arr[i];
+  }
+  vector<ll> res(3);
+  for (ll i = 0; i < 3; i++) {
+    for (ll j = 0; j < 3; j++) {
+      if (i == j)
+        continue;
+      if (arr[j] >= arr[i]) {
+        res[i] = max(res[i], arr[j] - arr[i] + 1);
+      }
+    }
+  }
+  print(res);
 }
 
 int main() {
   cin.tie(0)->sync_with_stdio(0);
   cin.exceptions(cin.failbit);
+  ll t;
+  cin >> t;
+  while (t--) {
+    solve();
+  }
 }

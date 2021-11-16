@@ -8,6 +8,7 @@
 #include <queue>
 #include <set>
 #include <stack>
+#include <tuple>
 #include <vector>
 #define ll long long
 using namespace std;
@@ -26,7 +27,6 @@ template <typename T> void print(const T &t) {
 template <typename T> void print2d(const T &t) {
   std::for_each(t.cbegin(), t.cend(), print<typename T::value_type>);
 }
-
 void setIO(string s) { // the argument is the filename without the extension
   freopen((s + ".in").c_str(), "r", stdin);
   freopen((s + ".out").c_str(), "w", stdout);
@@ -35,4 +35,32 @@ void setIO(string s) { // the argument is the filename without the extension
 int main() {
   cin.tie(0)->sync_with_stdio(0);
   cin.exceptions(cin.failbit);
+  setIO("shell");
+  ll t;
+  cin >> t;
+  vector<tuple<ll, ll, ll>> arr;
+  for (ll i = 0; i < t; i++) {
+    ll a, b, g;
+    cin >> a >> b >> g;
+    tp value = make_tuple(a, b, g);
+    arr.push_back(value);
+  }
+  ll res = 0;
+  for (ll i = 1; i <= 3; i++) {
+    ll init = i;
+    ll temp = 0;
+    for (ll j = 0; j < arr.size(); j++) {
+      tp curr = arr[j];
+      if (get<0>(curr) == init) {
+        init = get<1>(curr);
+      } else if (get<1>(curr) == init) {
+        init = get<0>(curr);
+      }
+      if (init == get<2>(curr)) {
+        temp++;
+      }
+    }
+    res = max(res, temp);
+  }
+  cout << res << endl;
 }
