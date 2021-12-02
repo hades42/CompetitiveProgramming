@@ -31,32 +31,37 @@ void setIO(string s) { // the argument is the filename without the extension
   freopen((s + ".in").c_str(), "r", stdin);
   freopen((s + ".out").c_str(), "w", stdout);
 }
-void read_stdin(vector<ll> &buffer) {
+void read_stdin(vector<pair<string, ll>> &buffer) {
   string line;
   while (getline(cin, line)) {
-    buffer.push_back(stoll(line));
+    ll i;
+    for (i = 0; i < line.size(); i++) {
+      if (line[i] == ' ')
+        break;
+    }
+    string first = line.substr(0, i);
+    string second = line.substr(i + 1);
+    buffer.push_back({first, stoll(second)});
   }
 }
 
 int main() {
-  vector<ll> arr;
-  ll num;
-  while (cin >> num) {
-    arr.push_back(num);
-  }
-  vector<ll> sum;
-  for (ll i = 0; i < arr.size() - 2; i++) {
-    ll temp = 0;
-    for (ll j = 0; j < 3; j++) {
-      temp += arr[i + j];
+  vector<pair<string, ll>> arr;
+  read_stdin(arr);
+  ll hori = 0;
+  ll depth = 0;
+  ll aim = 0;
+  for (ll i = 0; i < arr.size(); i++) {
+    if (arr[i].first == "forward") {
+      hori += arr[i].second;
+      depth += arr[i].second * aim;
+    } else if (arr[i].first == "down") {
+      aim += arr[i].second;
+    } else {
+      aim -= arr[i].second;
     }
-    sum.push_back(temp);
+    cout << hori << " " << depth << " " << aim << endl;
   }
-  ll res = 0;
-  for (ll i = 1; i < sum.size(); i++) {
-    if (sum[i] > sum[i - 1]) {
-      res++;
-    }
-  }
-  cout << res << endl;
+  cout << hori << " " << depth << endl;
+  cout << hori * depth << endl;
 }
