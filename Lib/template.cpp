@@ -5,6 +5,7 @@
 #include <iterator>
 #include <map>
 #include <math.h>
+#include <numeric>
 #include <queue>
 #include <set>
 #include <stack>
