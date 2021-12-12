@@ -66,8 +66,6 @@ int main() {
     }
     arr.push_back(temp);
   }
-  // print2d(arr);
-
   R = arr.size();
   C = arr[0].size();
 
