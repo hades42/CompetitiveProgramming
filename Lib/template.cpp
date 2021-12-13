@@ -1,17 +1,13 @@
-#include <algorithm>
-#include <array>
-#include <cstdio>
-#include <iostream>
-#include <iterator>
-#include <map>
-#include <math.h>
-#include <numeric>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
+#include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
 #define ll long long
+
+using namespace __gnu_pbds;
 using namespace std;
+
+typedef tree<int, null_type, less<int>, rb_tree_tag,
+             tree_order_statistics_node_update>
+    indexed_set;
 typedef tuple<ll, ll, ll> tp;
 typedef pair<ll, ll> pr;
 
