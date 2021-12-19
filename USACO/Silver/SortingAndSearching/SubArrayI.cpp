@@ -1,8 +1,13 @@
 #include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
 #define ll long long
 
+using namespace __gnu_pbds;
 using namespace std;
 
+typedef tree<int, null_type, less<int>, rb_tree_tag,
+             tree_order_statistics_node_update>
+    indexed_set;
 typedef tuple<ll, ll, ll> tp;
 typedef pair<ll, ll> pr;
 
@@ -27,4 +32,20 @@ void setIO(string s) { // the argument is the filename without the extension
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
+    ll n; ll target; cin >> n >> target;
+    vector<ll> prefix(n+1);
+    for(ll i = 1; i <= n; i++){
+        ll num; cin >> num;
+        prefix[i] = prefix[i-1] + num;
+    }
+    ll ans = 0;
+    map<ll, ll> mp;
+    mp[0] = 1;
+    for(ll i = 1; i <= n; i++){
+        if(mp.find(prefix[i] - target) != mp.end()){
+            ans += mp[prefix[i] - target];
+        }
+        mp[prefix[i]]++;
+    }
+    cout << ans << endl;
 }

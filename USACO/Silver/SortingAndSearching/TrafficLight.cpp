@@ -27,4 +27,23 @@ void setIO(string s) { // the argument is the filename without the extension
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
+    ll x; ll n; cin >> x >> n;
+    set<ll> light;
+    multiset<ll> dist;
+    light.insert(0);
+    light.insert(x);
+    dist.insert(x);        
+    for(ll i = 0; i < n; i++){
+        ll num; cin >> num;
+        auto it1 = light.upper_bound(num);
+        auto it2 = it1;
+        it2--;
+        dist.erase(dist.find(*it1 - *it2));
+        dist.insert(*it1 - num);
+        dist.insert(num - *it2);
+        light.insert(num);
+        auto ans = dist.end();
+        ans--;
+        cout << *(ans) << " ";
+    }
 }

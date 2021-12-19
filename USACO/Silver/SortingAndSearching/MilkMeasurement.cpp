@@ -27,4 +27,5 @@ void setIO(string s) { // the argument is the filename without the extension
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
+    // Using multiset to keep track of things and then compare the old multiset with the new one
 }

@@ -27,4 +27,20 @@ void setIO(string s) { // the argument is the filename without the extension
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
+    ll n, m; cin >> n >> m;
+    multiset<ll> st;
+    for(ll i = 0; i < n; i++){
+        ll num; cin >> num;
+        st.insert(num);
+    }
+    for(ll i = 0; i < m; i++){
+        ll price; cin >> price;
+        auto it = st.upper_bound(price);
+        if(it == st.begin()){
+            cout << -1 << endl;
+        } else{
+            cout << *(--it) << endl;
+            st.erase(it);
+        }
+    }
 }
