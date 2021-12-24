@@ -27,35 +27,19 @@ void setIO(string s) { // the argument is the filename without the extension
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
-    ll n, m; cin >> n >> m;
-    vector<ll> boy(n);
-    vector<ll> girl(m);
-    
-    ll sum = 0;
-    for(ll i = 0; i < n; i++){
-        cin >> boy[i];
-        sum += boy[i];
+    ll x, n;
+    cin >> x >> n;
+    priority_queue<ll, vector<ll>, greater<ll>> pq;
+    for(ll i = 0;  i < n; i++){
+        ll num; cin >> num;
+        pq.push(num);
     }
-
-    for(ll i = 0; i < m; i++){
-        cin >> girl[i];
+    ll ans = 0;
+    for(ll i = 1; i < n; i++){
+        ll a = pq.top(); pq.pop();
+        ll b = pq.top(); pq.pop();
+        pq.push(a + b);
+        ans += (a+b);
     }
-    
-    sum *= m;
-    sort(boy.begin(), boy.end()); 
-    sort(girl.begin(), girl.end());
-
-    if(boy[n-1] > girl[0]){
-        cout << -1 << endl;
-        return 0;
-    }
-
-    for(ll i = 1; i < m; i++){
-        sum += girl[i] - boy[n-1];
-    }
-    if(girl[0] != boy[n-1]){
-        sum += girl[0] - boy[n-2];
-    }
-    
-    cout << sum << endl;
+    cout << ans << endl;
 }
