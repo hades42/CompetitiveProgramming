@@ -23,43 +23,38 @@ void setIO(string s) { // the argument is the filename without the extension
   freopen((s + ".in").c_str(), "r", stdin);
   freopen((s + ".out").c_str(), "w", stdout);
 }
-
-struct DSU{
-    vector<ll> e;
-    DSU(ll N){
-        e = vector<ll>(N, -1);
-    };
-
-    ll get(ll x){ 
-        print(e);
-        return e[x] < 0 ? x : e[x] = get(e[x]);
-    };
-
-    ll size(ll x){
-        return -e[get(x)];
-    };
-
-    bool unite(ll a, ll b){
-        ll x = get(a); 
-        ll y = get(b);
-        cout << x << " " << y << endl;
-        if(x == y) return false;
-        if(e[x] > e[y]) swap(x, y); 
-        e[x] += e[y]; e[y] = x;
-        return true;
-    };
-};
+ll n, k; 
+vector<ll> arr;
 
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
-    DSU dsu(6);
-    dsu.unite(3, 1);
-    cout << dsu.size(3) << endl;
-    dsu.unite(3, 2);
-
-    //dsu.unite(3, 4);
-    //dsu.unite(4, 5);
-
-    print(dsu.e);
+    setIO("angry");
+    cin >> n >> k;
+    arr.resize(n);
+    for(ll i = 0; i < n; i++){
+        cin >> arr[i];
+    }
+    sort(arr.begin(), arr.end());
+    ll left = 0;
+    ll right = 1e9;
+    while(left < right){
+        ll mid = left + (right - left)/2;
+        ll used = 0;
+        ll last = 0;
+        while(last < n){
+            used++;
+            ll curr = last+1;
+            while(curr < n && arr[curr] - arr[last] <= 2*mid){
+                curr++;
+            }
+            last = curr;
+        }
+        if(used <= k){
+            right = mid;
+        } else{
+            left = mid + 1;
+        }
+    }
+    cout << left << endl;
 }

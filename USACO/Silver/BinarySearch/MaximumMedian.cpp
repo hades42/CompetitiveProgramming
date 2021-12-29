@@ -24,53 +24,39 @@ void setIO(string s) { // the argument is the filename without the extension
   freopen((s + ".out").c_str(), "w", stdout);
 }
 
-struct Node{
-    ll data;
-    struct Node* left;
-    struct Node* right;
+ll n, k; 
+vector<ll> arr;
 
-    Node(ll val){
-       data = val; 
-       left = NULL;
-       right = NULL;
+bool check(ll num){
+    ll need = 0;
+    for(ll i = (n-1)/2; i < n; i++){
+        need += max((ll)0, num - arr[i]);
     }
-};
+    //cout << need << " " << k << endl;
+    return need <= k;
+}
 
-// In-order travel of tree
-void travel(Node *node){
-    if(node == NULL){
-        return;
+// 
+ll bs(ll left, ll right){
+    left--;
+    while(left < right){
+        ll mid = left + (right - left + 1)/2;
+        if(check(mid)){
+            left = mid;
+        } else{
+            right = mid - 1;
+        }
     }
-
-    travel(node -> left);
-    cout << node -> data << " ";
-    travel(node -> right);
+    return left;
 }
 
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
-
-    struct Node* root = new Node(1);
-    
-    struct Node* first = new Node(2);
-    first -> left = new Node(4);
-    first -> right = new Node(5);
-   
-    struct Node* second = new Node(3);
-    second -> left = new Node(6); 
-
-    root -> left = first;
-    root -> right = second;
-
-    /*
-     *      1
-     *    /   \
-     *   2     3
-     *  / \   / 
-     * 4   5 6
-     *
-     * */
-
-    travel(root);
+    cin >> n >> k;
+    arr.resize(n);
+    for(ll i = 0; i < n; i++) cin >> arr[i];
+    sort(arr.begin(), arr.end());
+    ll ans = bs(1, 2e9);
+    cout << ans << endl;
 }

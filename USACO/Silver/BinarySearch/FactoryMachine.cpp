@@ -23,43 +23,40 @@ void setIO(string s) { // the argument is the filename without the extension
   freopen((s + ".in").c_str(), "r", stdin);
   freopen((s + ".out").c_str(), "w", stdout);
 }
+ll n, t; 
+vector<ll> arr;
 
-struct DSU{
-    vector<ll> e;
-    DSU(ll N){
-        e = vector<ll>(N, -1);
-    };
+bool check(ll time){
+    ll make = 0; 
+    for(ll i = 0; i < n; i++){
+        make += time / arr[i];
+        if(make >= t){
+            return true;
+        }
+    }
 
-    ll get(ll x){ 
-        print(e);
-        return e[x] < 0 ? x : e[x] = get(e[x]);
-    };
-
-    ll size(ll x){
-        return -e[get(x)];
-    };
-
-    bool unite(ll a, ll b){
-        ll x = get(a); 
-        ll y = get(b);
-        cout << x << " " << y << endl;
-        if(x == y) return false;
-        if(e[x] > e[y]) swap(x, y); 
-        e[x] += e[y]; e[y] = x;
-        return true;
-    };
-};
+    // This mean there is not enough time 
+    return make >= t;
+}
 
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
-    DSU dsu(6);
-    dsu.unite(3, 1);
-    cout << dsu.size(3) << endl;
-    dsu.unite(3, 2);
-
-    //dsu.unite(3, 4);
-    //dsu.unite(4, 5);
-
-    print(dsu.e);
+    cin >> n >> t;
+    arr.resize(n);
+    for(ll i =  0; i < n; i++){
+        cin >> arr[i];
+    }
+    ll low = 1;
+    ll high = 1e18;
+    while(low < high){
+        //cout << low << " " << high << endl;
+        ll mid = low + (high - low) /2;
+        if(check(mid)){
+            high = mid; 
+        }else{
+            low = mid + 1;
+        }
+    }
+    cout << low << endl;
 }

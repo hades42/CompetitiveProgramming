@@ -24,42 +24,27 @@ void setIO(string s) { // the argument is the filename without the extension
   freopen((s + ".out").c_str(), "w", stdout);
 }
 
-struct DSU{
-    vector<ll> e;
-    DSU(ll N){
-        e = vector<ll>(N, -1);
-    };
-
-    ll get(ll x){ 
-        print(e);
-        return e[x] < 0 ? x : e[x] = get(e[x]);
-    };
-
-    ll size(ll x){
-        return -e[get(x)];
-    };
-
-    bool unite(ll a, ll b){
-        ll x = get(a); 
-        ll y = get(b);
-        cout << x << " " << y << endl;
-        if(x == y) return false;
-        if(e[x] > e[y]) swap(x, y); 
-        e[x] += e[y]; e[y] = x;
-        return true;
-    };
-};
+ll w, h, n; 
+bool good(ll num){
+    return (num/w) * (num/h) >= n;
+}
 
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
-    DSU dsu(6);
-    dsu.unite(3, 1);
-    cout << dsu.size(3) << endl;
-    dsu.unite(3, 2);
+    cin >> w >> h >> n;
+    ll left = 0; // left is bad
+    ll right = 1; // right is good
+    while(!good(right)) right *=2;
+    cout << right << endl;
 
-    //dsu.unite(3, 4);
-    //dsu.unite(4, 5);
-
-    print(dsu.e);
+    while(left + 1 < right){
+        ll mid = (left + right)/2;
+        if(good(mid)){
+            right = mid;
+        } else{
+            left = mid;
+        }
+    }
+    cout << right << endl;
 }

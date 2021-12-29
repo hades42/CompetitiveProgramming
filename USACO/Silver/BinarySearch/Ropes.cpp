@@ -24,42 +24,33 @@ void setIO(string s) { // the argument is the filename without the extension
   freopen((s + ".out").c_str(), "w", stdout);
 }
 
-struct DSU{
-    vector<ll> e;
-    DSU(ll N){
-        e = vector<ll>(N, -1);
-    };
+ll n, k;
+vector<ll> arr;
 
-    ll get(ll x){ 
-        print(e);
-        return e[x] < 0 ? x : e[x] = get(e[x]);
-    };
-
-    ll size(ll x){
-        return -e[get(x)];
-    };
-
-    bool unite(ll a, ll b){
-        ll x = get(a); 
-        ll y = get(b);
-        cout << x << " " << y << endl;
-        if(x == y) return false;
-        if(e[x] > e[y]) swap(x, y); 
-        e[x] += e[y]; e[y] = x;
-        return true;
-    };
-};
-
+bool good(double num){
+    ll s = 0;
+    for(ll i = 0; i < arr.size(); i++){
+        s += floor(arr[i]/num);
+    }
+    return s >= k;
+}
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
-    DSU dsu(6);
-    dsu.unite(3, 1);
-    cout << dsu.size(3) << endl;
-    dsu.unite(3, 2);
-
-    //dsu.unite(3, 4);
-    //dsu.unite(4, 5);
-
-    print(dsu.e);
+    cin >> n >> k;
+    arr.resize(n);
+    for(ll i = 0; i < n; i++){
+        cin >> arr[i];
+    }
+    double left = 0; 
+    double right = 1e8;
+    for(ll i = 0; i <= 100; i++){
+        double mid = (left + right)/2;
+        if(good(mid)){
+            left = mid;
+        } else{
+            right = mid;
+        }
+    }
+    cout << setprecision(20) << left << endl;
 }

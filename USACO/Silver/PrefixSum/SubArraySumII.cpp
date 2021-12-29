@@ -43,7 +43,6 @@ int main() {
     cin >> num;
     arr[i] = arr[i - 1] + num;
   }
-  // print(arr);
   ll res = 0;
   set<ll> st;
   for (ll i = 1; i <= n; i++) {

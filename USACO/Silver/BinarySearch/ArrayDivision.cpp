@@ -23,47 +23,44 @@ void setIO(string s) { // the argument is the filename without the extension
   freopen((s + ".in").c_str(), "r", stdin);
   freopen((s + ".out").c_str(), "w", stdout);
 }
+ll n, k;
+vector<ll> arr;
+
+bool check(ll val){
+    ll count = 1;
+    ll sum = 0;
+    for(ll i = 0; i < n; i++){
+        if(sum + arr[i] > val){
+            sum = 0;
+            count++;
+        }
+        sum += arr[i];
+    }
+    return count <= k;
+}
 
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
-    //setIO("berries");
-    ll n, k; cin >> n >> k;
-    vector<ll> arr(n);
+    cin >> n >> k; 
+    arr.resize(n);
+    ll mx = 0;
     for(ll i = 0; i < n; i++){
         cin >> arr[i];
+        mx = max(mx, arr[i]);
     }
-    sort(arr.rbegin(), arr.rend());
-    multiset<ll> essie;
-    multiset<ll> bessie;
-    for(ll i = 0; i < k/2; i++){
-        essie.insert(arr[i]);
-    }
-    ll i = k/2;
-    while(true){
-        ll big = *prev(essie.end());
-        if(big/2 >= arr[i]){
-            essie.erase(essie.find(big));
-            if(big % 2 == 0){
-                essie.insert(big/2);
-                bessie.insert(big/2);
-            } else{
-                essie.insert(big/2+1);
-                bessie.insert(big/2);
-            }
+    ll left = mx;
+    ll right = 1e18;
+    ll ans = 1e18;
+    while(left < right){
+        //cout << left << " " << right << endl;
+        ll mid = left + (right - left)/2;
+        if(check(mid)){
+            ans = min(ans, mid);
+            right = mid;
         } else{
-            bessie.insert(arr[i]);
-            i++;
+            left = mid + 1;
         }
-        if(bessie.size() == k/2) break;
-    }
-    ll ans = 0;
-    for(auto val : essie){
-        cout << val << endl;
-    }
-    for(auto val : bessie){
-        cout << val << endl;
-        ans += val;
     }
     cout << ans << endl;
 }

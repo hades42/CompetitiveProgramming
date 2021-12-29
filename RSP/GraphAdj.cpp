@@ -26,7 +26,7 @@ void setIO(string s) { // the argument is the filename without the extension
 
 vector<vector<ll>> graph;
 vector<bool> visited;
-
+// O(N + E)
 void dfs(ll u){
     cout << u << " ";
     visited[u] = true;
@@ -37,6 +37,7 @@ void dfs(ll u){
     }
 }
 
+// O(N + E)
 void bfs(ll u){
     queue<ll> q;
     q.push(u);
@@ -77,5 +78,5 @@ int main() {
         graph[b].push_back(a);
     }
     //dfs(1);
-    //bfs(1);
+    bfs(1);
 }

@@ -35,6 +35,7 @@ struct Edge{
     ll weight;
 };
 
+// O(nlogn)
 void dijk(ll start){
     priority_queue<pr, vector<pr>, greater<pr>> pq;
 
@@ -58,6 +59,7 @@ void dijk(ll start){
 
 vector<Edge> allE;
 
+//O(N*E)
 void bellman(ll start){
     dis[start] = 0;
     for(ll i = 1; i <= node -1; i++){
@@ -79,7 +81,7 @@ int main() {
      *   5   2
      * 10 \  | 2
      *       3
-     *       | 5 
+     *       | 4 
      *       4
      *
      * */
@@ -97,8 +99,8 @@ int main() {
         allE.push_back({v, u, weight});
     }
 
-    dijk(1);
-    //bellman(1);
+    //dijk(1);
+    bellman(1);
     for(ll i = 1; i <= node; i++){
         cout << dis[i] << " ";
     }
