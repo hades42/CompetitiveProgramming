@@ -24,29 +24,36 @@ void setIO(string s) { // the argument is the filename without the extension
   freopen((s + ".out").c_str(), "w", stdout);
 }
 
-vector<ll> arr;
+ll e;
+ll dis = 0;
+vector<vector<ll>> G;
+
+void dfs(ll u, ll pu, ll depth){
+    for(ll v : G[u]){
+        if(v != pu){
+            dfs(v, u, depth+1);
+        }
+    }
+    if(depth > dis){
+        e = u;
+        dis = depth;
+    }
+}
 
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
-    ll t; cin >> t;
-    arr.resize(20);
-
-    for(ll i = 1; i <= t; i++){
-        ll id; cin >> id;
-        cout << id << " ";
-
-        for(ll i = 0; i < 20; i++){
-            cin >> arr[i];
-        }
-    
-        ll count = 0;
-        for(ll i = 0; i < arr.size() - 1; i++){
-            for(ll j = i + 1; j < arr.size(); j++){
-                if(arr[j] < arr[i]) count++;
-            }
-        }
-        
-        cout << count << endl;
+    ll n; cin >> n;
+    G.resize(n);
+    for(ll i = 0; i < n - 1; i++){
+        ll a, b; cin >> a >> b;
+        a--; b--;
+        G[a].push_back(b);
+        G[b].push_back(a);
     }
+
+    dfs(0, -1, 0);
+    dis = 0;
+    dfs(e, -1, 0);
+    cout << dis << endl;
 }
