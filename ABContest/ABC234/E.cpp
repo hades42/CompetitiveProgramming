@@ -24,28 +24,28 @@ void setIO(string s) { // the argument is the filename without the extension
   freopen((s + ".out").c_str(), "w", stdout);
 }
 
-string convert(ll k){
-    string res;
-    while(k > 0){
-        res += ((k % 2) + '0');
-        k /= 2;
-    }
-    reverse(res.begin(), res.end());
-    return res;
-}
+set<ll> nums;
 
-void read(string num){
-    for(ll i = 0; i < num.size(); i++){
-        if(num[i] == '1') cout << "2";
-        else cout << "0";
+void precompute(){
+    for(ll init = 1; init <= 9; init++){
+        for(ll d = -9; d <= 8; d++){
+            string curr;
+            int diff = init;
+            for(ll i = 1; i <= 18; i++){
+                curr += (diff + '0');
+                nums.insert(stoll(curr));
+                diff += d;
+                if(!(diff >= 0 && diff <= 9)) break;
+            }
+        }
     }
 }
 
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
-    ll k; cin >> k;
-    string bi = convert(k);
-    read(bi);
-    return 0;
+    precompute();
+    ll n; cin >> n;
+    auto it = nums.lower_bound(n);
+    cout << *it << endl;
 }
