@@ -1,10 +1,24 @@
-ll pow(ll a, ll b, ll mod) {
-  ll ans = 1;
-  while (b) {
-    if (b & 1)
-      ans = (ans * a) % mod;
-    b /= 2;
-    a = (a * a) % mod;
-  }
-  return ans;
+ll powmod(ll a, ll b, ll m){
+    a %= m;
+    ll res = 1;
+    while(b > 0){
+        if(b & 1){
+            res = res * a % m;
+        }
+        a = a * a % m;
+        b >>= 1;
+    }
+    return res;
+}
+
+ll fastPow(ll a, ll b){
+    ll res = 1;
+    while(b > 0){
+        if(b & 1){
+            res = res * a;
+        }
+        a = a * a;
+        b >>= 1;
+    }
+    return res;
 }

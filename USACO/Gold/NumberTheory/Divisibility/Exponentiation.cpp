@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+#define ll long long
+
+using namespace std;
+
+typedef tuple<ll, ll, ll> tp;
+typedef pair<ll, ll> pr;
+
+const ll MOD = 1000000007;
+const ll INF = 1e18;
+
+template <typename T> void print(const T &t) {
+  std::copy(t.cbegin(), t.cend(),
+            std::ostream_iterator<typename T::value_type>(std::cout, " "));
+  cout << endl;
+}
+
+template <typename T> void print2d(const T &t) {
+  std::for_each(t.cbegin(), t.cend(), print<typename T::value_type>);
+}
+
+void setIO(string s) { // the argument is the filename without the extension
+  freopen((s + ".in").c_str(), "r", stdin);
+  freopen((s + ".out").c_str(), "w", stdout);
+}
+
+ll powmod(ll a, ll b, ll mod){
+    if(b == 0) return 1 % mod;
+    ll u = powmod(a, b / 2, mod);
+    u = (u*u)%mod;
+    if(b % 2 == 1) u = (u * a)%mod;
+    return u;
+}
+
+void solve(){
+    ll a, b; cin >> a >> b;
+    cout << powmod(a, b, MOD) << endl;
+}
+
+int main() {
+    cin.tie(0)->sync_with_stdio(0);
+    cin.exceptions(cin.failbit);
+    ll t; cin >> t; 
+    while(t--){
+        solve();
+    }
+}
