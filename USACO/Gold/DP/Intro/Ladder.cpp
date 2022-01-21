@@ -27,7 +27,20 @@ void setIO(string s) { // the argument is the filename without the extension
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
-    vector<ll> arr{1, 2, 3, 4};
-    ll ans = upper_bound( arr.begin(), arr.end(), 5) - arr.begin() - 1;
-    cout << ans << endl;
+    setIO("ladder");
+    ll n; cin >> n;
+    vector<ll> stair(n+1);
+    for(ll i = 1; i <= n; i++) cin >> stair[i];
+    vector<ll> dp(n+1, -INF);
+    dp[0] = 0;
+    for(ll i = 1; i <= n; i++){
+        if(i - 1 >= 0){
+            dp[i] = max(dp[i], dp[i-1] + stair[i]);
+        }
+        if(i - 2 >= 0){
+            dp[i] = max(dp[i], dp[i-2] + stair[i]);
+        }
+    }
+    //print(dp);
+    cout << dp[n] << endl;
 }
