@@ -24,18 +24,57 @@ void setIO(string s) { // the argument is the filename without the extension
   freopen((s + ".out").c_str(), "w", stdout);
 }
 
+vector<vector<ll>> grid(20, vector<ll>(20));
+vector<bool> used(20);
+vector<pair<ll, ll>> vec;
+ll n; 
+ll res = 0;
+
+void compute(){
+    if(vec.size() == n){
+        ll temp = 0;
+        for(auto p : vec){
+            temp ^= (grid[p.first][p.second]);
+        }
+        res = max(res, temp);
+        return;
+    }
+
+    ll l;
+    for(ll i = 1; i <= 2*n; i++){
+        if(!used[i]){
+            l = i;
+            break;
+        }
+    }
+    used[l] = true;
+
+    for(ll i = 1; i <= 2*n; i++){
+        if(!used[i]){
+            vec.push_back({l, i});
+            used[i] = true;
+            compute();
+            vec.pop_back();
+            used[i] = false;
+        }
+    }
+
+    used[l] = false;
+}
+
+
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
-    ll n; cin >> n;
-    vector<vector<ll>> grid(9, vector<ll>(9));
+    cin >> n;
     ll amount = (2*n) * (2*n - 1) / 2;
     cout << amount << endl;
-    for(ll i = 1; i <= n + 1; i++){
+    for(ll i = 1; i <= 2*n - 1; i++){
         for(ll j = i + 1; j <= n*2; j++){
             ll num; cin >> num;
             grid[i][j] = num;
         }
     }
-    print2d(grid);
+    compute();
+    cout << res << endl;
 }
