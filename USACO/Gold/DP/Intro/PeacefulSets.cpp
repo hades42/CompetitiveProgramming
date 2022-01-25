@@ -24,45 +24,27 @@ void setIO(string s) { // the argument is the filename without the extension
   freopen((s + ".out").c_str(), "w", stdout);
 }
 
-vector<vector<ll>> G;
-vector<ll> dist;
-ll ans = 0;
-
-ll dfs(ll u){
-    ll curr = -1;
-    for(auto v : G[u]){
-        if(dist[v] == -1){
-            curr = max(curr, dfs(v));
-        } else{
-            curr = max(curr, dist[v]);
-        }
-    }
-    return dist[u] = curr + 1;
-}
-
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
-    //setIO("longpath");
-    ll n, m; cin >> n >> m;
-    G.resize(n);
-    dist.resize(n, -1);
-    for(ll i = 0; i < n; i++){
-        ll a, b; cin >> a >> b;
-        a--; b--;
-        G[a].push_back(b);
+    ll n; cin >> n;
+    vector<vector<ll>> dp(n+1, vector<ll>(n+1));
+    vector<vector<ll>> sum(n+1, vector<ll>(n+1));
+   
+    dp[0][0] = 1;
+    for(ll i = 0; i <= n; i++){
+        sum[0][i] = 1;
     }
-
-    for(ll i = 0; i < n; i++){
-        if(dist[i] == -1){
-            dfs(i);
+    for(ll i = 1; i <= n; i++){
+        for(ll j = 1; j <= i; j++){
+            dp[i][j] = sum[i - j][j / 2];
+            sum[i][j] = dp[i][j] + sum[i][j-1];
+        }
+        for(ll j = i + 1; j <= n; j++){
+            sum[i][j] = sum[i][j-1];
         }
     }
-    //print(dist);
-    ans = *max_element(dist.begin(), dist.end());
-    if(ans == -1){
-        cout << 0 << endl;
-    } else{
-        cout << ans << endl;
-    }
+    print2d(dp);
+    cout << endl;
+    print2d(sum);
 }

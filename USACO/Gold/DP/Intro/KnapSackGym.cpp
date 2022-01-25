@@ -24,45 +24,27 @@ void setIO(string s) { // the argument is the filename without the extension
   freopen((s + ".out").c_str(), "w", stdout);
 }
 
-vector<vector<ll>> G;
-vector<ll> dist;
-ll ans = 0;
-
-ll dfs(ll u){
-    ll curr = -1;
-    for(auto v : G[u]){
-        if(dist[v] == -1){
-            curr = max(curr, dfs(v));
-        } else{
-            curr = max(curr, dist[v]);
-        }
-    }
-    return dist[u] = curr + 1;
-}
-
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
-    //setIO("longpath");
-    ll n, m; cin >> n >> m;
-    G.resize(n);
-    dist.resize(n, -1);
+    ll s; ll n; cin >> s >> n;
+    vector<ll> W(n);
     for(ll i = 0; i < n; i++){
-        ll a, b; cin >> a >> b;
-        a--; b--;
-        G[a].push_back(b);
+        cin >> W[i];
     }
-
+    vector<bool> dp(s + 1, false);
+    dp[0] = true;
     for(ll i = 0; i < n; i++){
-        if(dist[i] == -1){
-            dfs(i);
+        for(ll curr = s; curr >= 1; curr--){
+            if(curr - W[i] >= 0){
+                dp[curr] = dp[curr] | dp[curr - W[i]];
+            }
         }
     }
-    //print(dist);
-    ans = *max_element(dist.begin(), dist.end());
-    if(ans == -1){
-        cout << 0 << endl;
-    } else{
-        cout << ans << endl;
+    for(ll i = s; i >= 0; i--){
+        if(dp[i]) {
+            cout << i << endl;
+            return 0;
+        }
     }
 }

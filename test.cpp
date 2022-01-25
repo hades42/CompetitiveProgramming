@@ -24,51 +24,41 @@ void setIO(string s) { // the argument is the filename without the extension
   freopen((s + ".out").c_str(), "w", stdout);
 }
 
-int curr;
-vector<ll> person
-vector<bool> seen;
-void dfs(i, vector<vector<int>>& statements){
-   seen[i] = true; 
-   for(int j = 0; j < statements[i].size; j++){
-       if(!seen[j]){
-           if(person[i] == 1){
-                person[j] = statements[i][j];
-                curr += person[j] == 1;
-                dfs(j, statements);
-           } else if(person[i] == 0){
-                person[j] = statements[i][j];
-                curr += person[j] == 1;
-                dfs(j, statements);
+int n;
+int ans = 0;
 
-
-           }
-       }
-   }
+bool valid(vector<vector<int>>& S, string curr){
+    for(ll i = 0; i < n; i++){
+        if(curr[i] == '1'){
+            for(ll j = 0; j < n; j++){
+                if(S[i][j] != 2 && S[i][j] != curr[j] - '0') return false;
+            }
+        }
+    }
+    return true;
 }
-int maximumGood(vector<vector<int>>& statements) {
-    person.resize(statements.size(), 2);
-    for(int i = 0; i < statements.size(); i++){
-        curr = 0;
-        vector<bool> temp(statements.size());
-        seen = temp;
-        // Good person
-        person[i] = 1;
-        curr += 1;
-        dfs(i, statements);
 
-        curr = 0;
-        vector<bool> temp2(statements.size());
-        seen = temp2;
-        person[i] = 0;
-        dfs(i, statements);
+void dfs(vector<vector<int>>& S, int i, int cnt, string curr){
+    if(i == n){
+        if(valid(S, curr)) ans = max(ans, cnt);
+        return;
+    }
 
-        person[i] = 2; 
-    } 
+    curr.append(1, '0'); // this is bad person
+    dfs(S, i + 1, cnt, curr);
+    curr.back() = '1'; // This is good person
+    dfs(S, i + 1, cnt+1, curr);
+    curr.pop_back();
+}
+
+int maximumGood(vector<vector<int>>& S) {
+   n = S.size(); 
+   string curr = "";
+   dfs(S, 0, 0, curr);
+   return ans;
 }
 
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
-    vector<int> test{11, 7, 2, 15};
-    countElements(test);
 }
