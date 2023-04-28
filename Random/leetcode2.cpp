@@ -24,35 +24,35 @@ void setIO(string s) { // the argument is the filename without the extension
   freopen((s + ".out").c_str(), "w", stdout);
 }
 
-int minSwaps(vector<int>& nums) {
-    int N = nums.size();
-    int ones = 0;
-    int mis = 0;
-    for(int i = 0; i < N; i++){
-        nums.push_back(nums[i]);
-    }
-    for(int i = 0; i < N; i++){
-        ones += nums[i] == 1;
-    }
+bool check(int n, int cRow, int cColumn){
+    return cRow >= 0 && cRow < n && cColumn >= 0 && cColumn < n;
+}
 
-    for(int i = 0; i < N; i++){
-        mis += nums[i] == 0;
+int countOperations(int num1, int num2) {
+    int temp1 = num1;
+    int temp2 = num2;
+    int cnt = 0;
+    while(temp1 != 0 && temp2 != 0){
+        while(temp1 >= temp2){
+            temp1 -= temp2;
+            cnt++;
+            if(temp1 == 0) break;
+        }    
+
+        if(temp1 == 0 || temp2 == 0) break;
+
+        while(temp2 > temp1){
+            temp2 -= temp1;
+            cnt++;
+            if(temp2 == 0) break;
+        }
+        if(temp1 == 0 || temp2 == 0) break;
     }
-    int tempMis = 0;
-    for(int i = 0; i < ones; i++){
-        tempMis += nums[i] == 0;
-    }
-    for(int i = ones; i < 2*N; i++){
-        if(nums[i] == 0)tempMis++;
-        if(nums[i - ones] == 0) tempMis--;
-        mis = min(tempMis, mis);
-    }
-    return mis;
+    return cnt;
 }
 
 int main() {
     cin.tie(0)->sync_with_stdio(0);
     cin.exceptions(cin.failbit);
-    vector<int> temp{1};
-    cout << minSwaps(temp);
+    cout << countOperations(2, 3) << endl;
 }
