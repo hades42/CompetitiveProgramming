@@ -1,80 +1,63 @@
 import scala.io.Source
-import scala.collection.mutable.{Map, ArrayBuffer}
+import scala.collection.mutable.{Map}
 
-var cache = Map[String, Long]()
+import TerminalOutput.*
+import Command.*
 
-def calSum(node: String, 
-          childrenMap: Map[String, ArrayBuffer[String]], 
-          filesMap: Map[String, Long]): Long = 
-{
-  filesMap(node) + childrenMap(node).map(calSum(_, childrenMap, filesMap)).sum
 
-  //println(node)
-  //if(!cache.contains(node)) {
-    //cache(node) = filesMap(node) + childrenMap(node).map(x => filesMap(x) + calSum(x, childrenMap, filesMap)).sum
-  //}
-  //cache(node)
+enum Command:
+  case ChangeDirectory(directory: String)
+  case ListFiles
+
+enum TerminalOutput:
+  case Cmd(cmd: Command)
+  case Directory(name: String)
+  case File(size: Int, name: String)
+
+class DirectoryStructure(val name: String,
+                         val subDirectories: Map[String, DirectoryStructure],
+                         val files: Map[String, Int],
+                         val parent: DirectoryStructure | Null)
+
+def buildState(input: List[TerminalOutput], currDirectory: DirectoryStructure | Null, rootDir: DirectoryStructure): Unit = input match{
+  case Cmd(ChangeDirectory("/")) :: t => buildState(t, rootDir, rootDir)
+  case Cmd(ChangeDirectory("..")) :: t => buildState(t, currDirectory.parent, rootDir)
+  case Cmd(ChangeDirectory(name)) :: t => buildState(t, currDirectory.subDirectories(name), rootDir)
+  case Cmd(ListFiles) :: t => buildState(t, currDirectory, rootDir)
+  case File(size, name) :: t => 
+    currDirectory.files.put(name, size)
+    buildState(t, currDirectory, rootDir)
+  case Directory(dir) :: t =>
+    currDirectory.subDirectories.put(dir, new DirectoryStructure(dir, Map.empty, Map.empty, currDirectory))
+    buildState(t, currDirectory, rootDir)
+  case Nil => ()
+} 
+
+def buildData(input: List[TerminalOutput]) =
+  val rootDir = new DirectoryStructure("/", Map.empty, Map.empty, null)
+  buildState(input, null, rootDir)
+  rootDir
+
+def parse(str: List[String]) = str.map{
+  case s"$$ cd $directory" => Cmd(ChangeDirectory(directory))
+  case s"$$ ls" => Cmd(ListFiles)
+  case s"dir $directory" => Directory(directory)
+  case s"$size $file" => File(size.toInt, file)
+}.toList
+
+def directorySize(curr: DirectoryStructure): Int = {
+  curr.files.values.sum + curr.subDirectories.values.map(directorySize).sum
+}
+
+def collectSizes(init: DirectoryStructure, demand: Int => Boolean): Iterable[Int] = {
+  val currSize = directorySize(init)
+  val children = init.subDirectories.values.flatMap(collectSizes(_, demand))
+  if(demand(currSize)) then currSize :: children.toList else children
 }
 
 @main def main = {
-  /*
-  We can have 3 maps: 
-  * 1 maps is for maping all the files to the dirs
-  * 1 maps is for maping the parent of the dirs
-  * 1 maps is for mapping all the children of the dirs
-  */
-  
-  val filesMap = Map[String, Long]()
-  // Every node only have 1 parent
-  val parentsMap = Map[String, String]()
-  // Every node can have multiple children
-  val childrenMap = Map[String, ArrayBuffer[String]]()
-  
-  val input = Source.fromFile("input.txt").getLines.toList
-  //println(input)
-  var currDir = ""
-  for(line <- input){
-    if(line.contains("$ cd")){
-      val currCmd = line.split(" ").toList 
-      if(currCmd(2) != "..") currDir = currCmd(2) 
-      else{
-        currDir = parentsMap(currDir) 
-      }
-    }
-    else if(line.contains("$ ls")){
-      if(!childrenMap.contains(currDir)) childrenMap(currDir) = new ArrayBuffer[String]()
-      if(!filesMap.contains(currDir)) filesMap(currDir) = 0 
-    }
-    else if(!line.contains("$")){
-      val currList = line.split(" ").toList
-      //println(currList)
-      if(currList(0) == "dir"){
-        parentsMap(currList(1)) = currDir
-        childrenMap(currDir).append(currList(1))
-      } else{
-        filesMap(currDir) = filesMap(currDir) + currList(0).toLong 
-      }
-    }
-    //println(filesMap)
-    //println(parentsMap)
-    //println(childrenMap)
-    //println("-------------")
-  }
-  
-
-  
-  var result: Long = 0
-  for(node <- childrenMap.keys.toList){
-    val sum = calSum(node, childrenMap, filesMap)
-    if(sum <= 100000){
-      result = result + sum
-      println(s"${node} ${sum}")
-    }
-  }
-
-  println("---------------")
-  println(filesMap)
-  println(parentsMap)
-  println(childrenMap)
-  println(result)
+  //println(Source.fromFile("input.txt").toLIst)
+  val input = parse(Source.fromFile("input.txt").getLines.toList)
+  val root1 = buildData(input)
+  println(collectSizes(root1, _ < 100000).sum) 
 }
